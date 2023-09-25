@@ -1,0 +1,29 @@
+{
+    "format": "sgs-board",
+    "format_version": 0,
+    "name": "Example Board",
+    "description": "This is an example board.",
+    "buttons": {
+        "happy": {
+            "label": "happy",
+            "image": null
+        },
+        "what": {
+            "label": "what",
+            "image": "what"
+        }
+    },
+    "images": {
+        "what": "what.png"
+    },
+    "layout": {
+        "rows": 4,
+        "cols": 6,
+        "order": [
+            "happy", "what", null, null, null, null,
+            null, null, null, null, null, null,
+            null, null, null, null, null, null,
+            null, null, null, null, null, "what"
+        ]
+    }
+}

@@ -1,0 +1,21 @@
+[package]
+name = "sgs"
+version = "0.1.0"
+authors = ["Ellen Marie Dash <me@duckie.co>"]
+edition = "2021"
+
+description = "Framework for creating the software for a Speech Generating Device"
+documentation = "https://doc.rs/sgs"
+readme = "README.md"
+# homepage = ...
+repository = "https://github.com/duckinator/sgs"
+license = "MIT"
+
+keywords = ["sgs", "aac", "communication"]
+categories = ["accessibility"]
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+nanoserde = "0.1.35"
