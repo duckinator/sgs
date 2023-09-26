@@ -34,6 +34,12 @@ pub struct PopulatedLayout<'a> {
     pub buttons: Vec<Option<&'a Button>>
 }
 
+impl PopulatedLayout<'_> {
+    pub fn get_button(&self, col: usize, row: usize) -> Option<&Button> {
+        self.buttons[row * self.layout.cols + col]
+    }
+}
+
 impl Board {
     pub fn get_button(&self, name: &str) -> Option<&Button> {
         self.buttons.get(name)
@@ -59,8 +65,6 @@ impl Board {
     pub fn build(&self) -> Option<PopulatedLayout> {
         let layout = &self.layout;
         let size: usize = layout.rows as usize * layout.cols as usize;
-        println!("{} rows x {} cols = {} positions", layout.rows, layout.cols, size);
-        //let mut buttons: Vec<Option<&Button>> = Vec::with_capacity(size);
         let mut buttons = vec![None; size];
 
         assert!(layout.order.len() == size);
