@@ -1,12 +1,9 @@
 use std::fs;
 
-use nanoserde::{DeJson};
-
-// TODO: Drag stuff to lib.rs and similar eventually.
-//use sgs::*;
-
 pub mod board;
 use board::Board;
+
+pub mod panel;
 
 fn main() {
     let path = "board.json";
