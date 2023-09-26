@@ -11,7 +11,7 @@ use board::Board;
 fn main() {
     let path = "board.json";
     let mut board: Board = fs::read_to_string(path).map(|contents|
-        DeJson::deserialize_json(&contents).unwrap()
+        Board::load_str(&contents).unwrap()
     ).unwrap();
 
     let mut input = String::new();
