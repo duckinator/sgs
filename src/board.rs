@@ -1,12 +1,37 @@
 use std::collections::HashMap;
+use std::str::FromStr;
 use nanoserde::{DeJson, DeJsonErr, SerJson};
+
+#[derive(Clone, Debug, DeJson, SerJson, PartialEq)]
+pub enum Action {
+    Speak,
+    AddPhrase,
+    AddCharacter,
+    SelectBoard,
+    RemoveLast,
+}
+
+impl FromStr for Action {
+    type Err = String;
+
+    fn from_str(input: &str) -> Result<Action, Self::Err> {
+        match input {
+            "Speak" => Ok(Action::Speak),
+            "AddPhrase" => Ok(Action::AddPhrase),
+            "AddCharacter" => Ok(Action::AddCharacter),
+            "SelectBoard" => Ok(Action::SelectBoard),
+            "RemoveLast" => Ok(Action::RemoveLast),
+            _ => Err(format!("unknown Action type: {}", input)),
+        }
+    }
+}
 
 #[derive(Clone, Debug, DeJson, SerJson, PartialEq)]
 pub struct Button {
     pub label: String,
     pub pronunciation: Option<String>,
     pub image: Option<String>,
-    pub action: Option<String>,
+    pub action: Option<Action>,
 }
 
 #[derive(Clone, Debug, Default, DeJson, SerJson)]
@@ -99,13 +124,23 @@ fn test_board() {
         "name": "Example Board",
         "description": "This is an example board.",
         "buttons": {
+            "Hey!": {
+                "label": "Hey!",
+                "action": "Speak"
+            },
             "happy": {
                 "label": "happy",
-                "image": null
+                "image": null,
+                "action": "AddPhrase"
             },
             "what": {
                 "label": "what",
-                "image": "what"
+                "image": "what",
+                "action": "AddPhrase"
+            },
+            "a": {
+                "label": "a",
+                "action": "AddCharacter"
             }
         },
         "images": {
@@ -124,16 +159,22 @@ fn test_board() {
     }"#;
 
     let board: Board = DeJson::deserialize_json(json).unwrap();
-    assert_eq!(board.name, "Example Board");
-    assert_eq!(board.buttons["happy"].label, "happy");
-    assert_eq!(board.buttons["what"].label, "what");
-    assert_eq!(board.buttons["what"].image, Some("what".to_string()));
-    assert_eq!(board.images["what"], "what.png");
+
+    assert_eq!("Example Board", board.name);
+    assert_eq!("happy", board.buttons["happy"].label);
+    assert_eq!(Some(Action::AddPhrase), board.buttons["happy"].action);
+    assert_eq!(None, board.buttons["happy"].image);
+
+    assert_eq!("what", board.buttons["what"].label);
+    assert_eq!(Some("what".to_string()), board.buttons["what"].image);
+    assert_eq!("what.png", board.images["what"]);
+    assert_eq!(Some(Action::AddPhrase), board.buttons["happy"].action);
 
     let built = board.build().unwrap();
-    assert_eq!(built.buttons[0], Some(&board.buttons["happy"]));
-    assert_eq!(built.buttons[1], Some(&board.buttons["what"]));
-    assert_eq!(built.buttons[4 * 6 - 1], Some(&board.buttons["what"]));
+    assert_eq!(Some(&board.buttons["happy"]), built.buttons[0]);
+    assert_eq!(Some(&board.buttons["what"]), built.buttons[1]);
+    assert_eq!(Some(&board.buttons["what"]), built.buttons[4 * 6 - 1]);
+    assert_eq!(Some(Action::AddPhrase), built.buttons[0].unwrap().action);
 }
 
 #[test]
@@ -152,7 +193,7 @@ pub fn test_populated_layout() {
     let buttons = vec![a.as_ref(), None, c.as_ref(), d.as_ref(), e.as_ref(), None];
     let built = PopulatedLayout { layout, buttons };
 
-    assert_eq!(built.buttons.len(), (built.layout.rows * built.layout.cols).try_into().unwrap());
+    assert_eq!(built.layout.rows * built.layout.cols, built.buttons.len());
 
-    assert_eq!(&built.buttons[0..built.layout.cols], vec![a.as_ref(), None, c.as_ref()]);
+    assert_eq!(vec![a.as_ref(), None, c.as_ref()], &built.buttons[0..built.layout.cols]);
 }
