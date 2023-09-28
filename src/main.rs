@@ -4,6 +4,7 @@ use clearscreen;
 
 use sgs::board::Board;
 use sgs::panel::Panel;
+use sgs::speech::SpeechEngine;
 
 fn main() {
     let path = "board.json";
@@ -11,7 +12,8 @@ fn main() {
         Board::load_str(&contents).unwrap()
     ).unwrap();
 
-    let mut panel: Panel = Panel::new();
+    let speech_engine = SpeechEngine::new();
+    let mut panel = Panel::new();
     let mut input = String::new();
 
     loop {
@@ -20,7 +22,7 @@ fn main() {
 
         if input.trim() == "q" { return; }
 
-        match process(&mut panel, &board, &input) {
+        match process(&mut panel, &speach_engine, &board, &input) {
             Ok(b) => { board = b },
             Err(s) => println!("ERROR: {}", s),
         }
@@ -62,7 +64,7 @@ fn read(input: &mut String) {
     std::io::stdin().read_line(input).unwrap();
 }
 
-fn process<'a>(panel: &'a mut Panel, board: &'a Board, input: &'a String) -> Result<Board, &'static str> {
+fn process<'a>(panel: &'a mut Panel, speach_engine: &SpeachEngine, board: &'a Board, input: &'a String) -> Result<Board, &'static str> {
     let built = board.build().unwrap();
 
     let words: Vec<&str> = input.split_whitespace().collect();
@@ -81,7 +83,7 @@ fn process<'a>(panel: &'a mut Panel, board: &'a Board, input: &'a String) -> Res
 
         let btn = built.get_button(col, row).ok_or("no such button")?;
 
-        panel.apply_button(btn);
+        panel.apply_button(btn, speech_engine);
     }
 
     Ok(board.clone())

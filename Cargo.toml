@@ -20,3 +20,4 @@ categories = ["accessibility"]
 [dependencies]
 clearscreen = "2.0.1"
 nanoserde = "0.1.35"
+tts = "0.25.6"

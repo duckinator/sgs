@@ -33,11 +33,13 @@ impl Panel {
         self.entries.iter().map(|e| e.get_pronouncible_text()).collect::<Vec<_>>().join(" ")
     }
 
-    pub fn apply_button(&mut self, button: &Button) {
+    // FIXME: Where the fuck should this go?
+    // It modifies a Panel, but also uses a Button and a SpeechEngine.
+    pub fn apply_button(&mut self, button: &Button, speech_engine: &SpeechEngine) {
         match &button.action {
-            Action::Speak => println!("SPEAK: {}", button.get_pronouncible_text()),
+            Action::Speak => speach_engine.speak(button.get_pronouncible_text()),
             Action::SpeakBuiltPhrase => {
-                println!("SPEAK: {}", self.get_pronouncible_text());
+                speech_engine.speak(self.get_pronouncible_text());
                 self.clear();
             },
             Action::Append => self.add_entry(button),
