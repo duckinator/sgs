@@ -1,4 +1,5 @@
 use crate::button::{Button, Action};
+use crate::speech::SpeechEngine;
 
 pub struct Panel {
     entries: Vec<Button>,
@@ -35,9 +36,9 @@ impl Panel {
 
     // FIXME: Where the fuck should this go?
     // It modifies a Panel, but also uses a Button and a SpeechEngine.
-    pub fn apply_button(&mut self, button: &Button, speech_engine: &SpeechEngine) {
+    pub fn apply_button(&mut self, button: &Button, speech_engine: &mut SpeechEngine) {
         match &button.action {
-            Action::Speak => speach_engine.speak(button.get_pronouncible_text()),
+            Action::Speak => speech_engine.speak(button.get_pronouncible_text()),
             Action::SpeakBuiltPhrase => {
                 speech_engine.speak(self.get_pronouncible_text());
                 self.clear();

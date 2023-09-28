@@ -12,7 +12,7 @@ fn main() {
         Board::load_str(&contents).unwrap()
     ).unwrap();
 
-    let speech_engine = SpeechEngine::new();
+    let mut speech_engine = SpeechEngine::new();
     let mut panel = Panel::new();
     let mut input = String::new();
 
@@ -22,7 +22,7 @@ fn main() {
 
         if input.trim() == "q" { return; }
 
-        match process(&mut panel, &speach_engine, &board, &input) {
+        match process(&mut panel, &mut speech_engine, &board, &input) {
             Ok(b) => { board = b },
             Err(s) => println!("ERROR: {}", s),
         }
@@ -64,7 +64,7 @@ fn read(input: &mut String) {
     std::io::stdin().read_line(input).unwrap();
 }
 
-fn process<'a>(panel: &'a mut Panel, speach_engine: &SpeachEngine, board: &'a Board, input: &'a String) -> Result<Board, &'static str> {
+fn process<'a>(panel: &'a mut Panel, speech_engine: &mut SpeechEngine, board: &'a Board, input: &'a String) -> Result<Board, &'static str> {
     let built = board.build().unwrap();
 
     let words: Vec<&str> = input.split_whitespace().collect();
