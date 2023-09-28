@@ -54,21 +54,23 @@ fn test_panel() {
     let bar = Button { label: "bar".to_string(), pronunciation: None, image: None, action: Action::Append };
     let baz = Button { label: "baz".to_string(), pronunciation: None, image: None, action: Action::Append };
     let exc = Button { label: "!".to_string(), pronunciation: None, image: None, action: Action::Append };
+    let delete = Button { label: "[Backspace]".to_string(), pronunciation: None, image: None, action: Action::RemoveLast };
 
     let mut panel = Panel::new();
 
-    panel.add_entry(&foo);
-    panel.add_entry(&bar);
-    panel.add_entry(&baz);
-    panel.add_entry(&exc);
+    panel.apply_button(&foo);
+    panel.apply_button(&bar);
+    panel.apply_button(&baz);
+    panel.apply_button(&exc);
+    panel.apply_button(&exc);
+    assert_eq!("foo bar baz ! !", panel.get_text());
 
+    panel.apply_button(&delete);
     assert_eq!("foo bar baz !", panel.get_text());
 
     panel.remove_last_entry();
-
     assert_eq!("foo bar baz", panel.get_text());
 
     panel.remove_last_entry();
-
     assert_eq!("foo bar", panel.get_text());
 }
