@@ -4,13 +4,33 @@
     "name": "Example Board",
     "description": "This is an example board.",
     "buttons": {
-        "happy": {
-            "label": "happy",
-            "image": null
+        "Hey!": {
+            "label": "Hey!",
+            "image": null,
+            "action": "Speak"
         },
-        "what": {
-            "label": "what",
-            "image": "what"
+        "hello": {
+            "label": "hello",
+            "image": null,
+            "action": "Append"
+        },
+        "world": {
+            "label": "world",
+            "image": "world",
+            "action": "Append"
+        },
+        "[exclamation-mark]": {
+            "label": "!",
+            "action": "Append"
+        },
+        "[speak]": {
+            "label": "[SPEAK]",
+            "action": "SpeakBuiltPhrase"
+        },
+        "[backspace]": {
+            "label": "[Backspace]",
+            "image": null,
+            "action": "RemoveLast"
         }
     },
     "images": {
@@ -20,10 +40,10 @@
         "rows": 4,
         "cols": 6,
         "order": [
-            "happy", "what", null, null, null, null,
+            "Hey!", null, null, null, "[backspace]", "[speak]",
+            "hello", "world", null, null, null, null,
             null, null, null, null, null, null,
-            null, null, null, null, null, null,
-            null, null, null, null, null, "what"
+            "[exclamation-mark]", null, null, null, null, "world"
         ]
     }
 }

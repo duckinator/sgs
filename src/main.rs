@@ -1,9 +1,9 @@
 use std::fs;
 
-pub mod board;
-use board::Board;
+use clearscreen;
 
-pub mod panel;
+use sgs::board::Board;
+use sgs::panel::Panel;
 
 fn main() {
     let path = "board.json";
@@ -11,15 +11,16 @@ fn main() {
         Board::load_str(&contents).unwrap()
     ).unwrap();
 
+    let mut panel: Panel = Panel::new();
     let mut input = String::new();
 
     loop {
-        render(&board);
+        render(&panel, &board);
         read(&mut input);
 
         if input.trim() == "q" { return; }
 
-        match process(&board, &input) {
+        match process(&mut panel, &board, &input) {
             Ok(b) => { board = b },
             Err(s) => println!("ERROR: {}", s),
         }
@@ -28,8 +29,13 @@ fn main() {
     }
 }
 
-fn render(board: &Board) {
+fn render(panel: &Panel, board: &Board) {
     let built = board.build().unwrap();
+
+    clearscreen::clear().unwrap();
+
+    println!("TEXT: {}", panel.get_text());
+    println!();
 
     print!("{:^12} |", "");
     for c in 0..built.layout.cols {
@@ -56,7 +62,7 @@ fn read(input: &mut String) {
     std::io::stdin().read_line(input).unwrap();
 }
 
-fn process<'a>(board: &'a Board, input: &'a String) -> Result<Board, &'static str> {
+fn process<'a>(panel: &'a mut Panel, board: &'a Board, input: &'a String) -> Result<Board, &'static str> {
     let built = board.build().unwrap();
 
     let words: Vec<&str> = input.split_whitespace().collect();
@@ -75,7 +81,7 @@ fn process<'a>(board: &'a Board, input: &'a String) -> Result<Board, &'static st
 
         let btn = built.get_button(col, row).ok_or("no such button")?;
 
-        println!("({}, {}) = {}", col, row, btn.label.clone());
+        panel.apply_button(btn);
     }
 
     Ok(board.clone())

@@ -1,9 +1,7 @@
-struct Entry {
-    text: String,
-}
+use crate::button::{Button, Action};
 
-struct Panel {
-    entries: Vec<Entry>,
+pub struct Panel {
+    entries: Vec<Button>,
 }
 
 impl Panel {
@@ -11,27 +9,58 @@ impl Panel {
         Self { entries: vec![] }
     }
 
-    pub fn add_entry(&mut self, text: String) {
-        self.entries.push(Entry { text });
+   pub fn add_entry(&mut self, button: &Button) {
+        if button.action != Action::Append {
+            panic!("Panel::add_entry() should only be used with buttons that have the type of Action::Append");
+        }
+
+        self.entries.push(button.clone());
     }
 
     pub fn remove_last_entry(&mut self) {
         self.entries.pop();
     }
 
-    pub fn get_text(&self) -> String {
-        self.entries.iter().map(|e| e.text.clone()).collect::<Vec<_>>().join(" ")
+    pub fn clear(&mut self) {
+        self.entries.clear();
     }
+
+    pub fn get_text(&self) -> String {
+        self.entries.iter().map(|e| e.label.clone()).collect::<Vec<_>>().join(" ")
+    }
+
+    pub fn get_pronouncible_text(&self) -> String {
+        self.entries.iter().map(|e| e.get_pronouncible_text()).collect::<Vec<_>>().join(" ")
+    }
+
+    pub fn apply_button(&mut self, button: &Button) {
+        match &button.action {
+            Action::Speak => println!("SPEAK: {}", button.get_pronouncible_text()),
+            Action::SpeakBuiltPhrase => {
+                println!("SPEAK: {}", self.get_pronouncible_text());
+                self.clear();
+            },
+            Action::Append => self.add_entry(button),
+            Action::SelectBoard => panic!("board selection not implemented"),
+            Action::RemoveLast => self.remove_last_entry(),
+        }
+    }
+
 }
 
 #[test]
 fn test_panel() {
+    let foo = Button { label: "foo".to_string(), pronunciation: None, image: None, action: Action::Append };
+    let bar = Button { label: "bar".to_string(), pronunciation: None, image: None, action: Action::Append };
+    let baz = Button { label: "baz".to_string(), pronunciation: None, image: None, action: Action::Append };
+    let exc = Button { label: "!".to_string(), pronunciation: None, image: None, action: Action::Append };
+
     let mut panel = Panel::new();
 
-    panel.add_entry("foo".to_string());
-    panel.add_entry("bar".to_string());
-    panel.add_entry("baz".to_string());
-    panel.add_entry("!".to_string());
+    panel.add_entry(&foo);
+    panel.add_entry(&bar);
+    panel.add_entry(&baz);
+    panel.add_entry(&exc);
 
     assert_eq!("foo bar baz !", panel.get_text());
 
