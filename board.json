@@ -40,8 +40,8 @@
         "rows": 4,
         "cols": 6,
         "order": [
-            "Hey!", null, null, null, "[backspace]", "[speak]",
-            "hello", "world", null, null, null, null,
+            "hello", "world", null, null, "[backspace]", "[speak]",
+            "Hey!", null, null, null, null, null,
             null, null, null, null, null, null,
             "[exclamation-mark]", null, null, null, null, "world"
         ]
