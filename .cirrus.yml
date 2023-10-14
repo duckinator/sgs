@@ -1,6 +1,9 @@
 Lint_task:
   container:
     image: rust:1.73
+  install_script:
+    - apt-get update
+    - apt-get install -y libclang-dev libspeechd-dev
   script:
     - cargo clippy
 
