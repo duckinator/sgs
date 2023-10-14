@@ -18,6 +18,6 @@ categories = ["accessibility"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clearscreen = "2.0.1"
+eframe = "0.23.0"
 nanoserde = "0.1.35"
 tts = "0.25.6"

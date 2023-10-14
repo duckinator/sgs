@@ -1,90 +1,70 @@
 use std::fs;
 
-use clearscreen;
+use eframe::egui;
 
 use sgs::board::Board;
 use sgs::panel::Panel;
 use sgs::speech::SpeechEngine;
 
+struct App {
+    speech_engine: SpeechEngine,
+    panel: Panel,
+    home: Board,
+    board: Board,
+}
+
+impl App {
+    fn new(cc: &eframe::CreationContext<'_>) -> Self {
+        // Customize egui here with cc.egui_ctx.set_fonts and cc.egui_ctx.set_visuals.
+        // Restore app state using cc.storage (requires the "persistence" feature).
+        // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
+        // for e.g. egui::PaintCallback.
+        let speech_engine = SpeechEngine::new();
+        let panel = Panel::new();
+
+        let path = "board.json";
+        let home : Board = fs::read_to_string(path).map(|contents|
+            Board::load_str(&contents).unwrap()
+        ).unwrap();
+        let board = home.clone();
+
+        Self { speech_engine, panel, home, board }
+    }
+}
+
+impl eframe::App for App {
+    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        egui::TopBottomPanel::top("panel").show(ctx, |ui| {
+            ui.horizontal(|ui| {
+                for entry in &self.panel.entries {
+                    ui.button(entry.label.clone());
+                }
+            });
+        });
+
+        egui::CentralPanel::default().show(ctx, |ui| {
+            egui::Grid::new("board").show(ui, |ui| {
+                let built = self.board.build().unwrap();
+                for row in 0..built.layout.rows {
+                    for col in 0..built.layout.cols {
+                        if let Some(button) = built.get_button(col, row) {
+                            if ui.button(button.label.clone()).clicked() {
+                                self.panel.apply_button(button, &mut self.speech_engine);
+                            }
+                        } else {
+                            // No button for (row, col).
+                        }
+                    }
+                    ui.end_row();
+                }
+
+                //Ok(self.board.clone());
+            });
+        });
+    }
+}
+
 fn main() {
-    let path = "board.json";
-    let mut board: Board = fs::read_to_string(path).map(|contents|
-        Board::load_str(&contents).unwrap()
-    ).unwrap();
-
-    let mut speech_engine = SpeechEngine::new();
-    let mut panel = Panel::new();
-    let mut input = String::new();
-
-    loop {
-        render(&panel, &board);
-        read(&mut input);
-
-        if input.trim() == "q" { return; }
-
-        match process(&mut panel, &mut speech_engine, &board, &input) {
-            Ok(b) => { board = b },
-            Err(s) => println!("ERROR: {}", s),
-        }
-
-        input.clear()
-    }
-}
-
-fn render(panel: &Panel, board: &Board) {
-    let built = board.build().unwrap();
-
-    clearscreen::clear().unwrap();
-
-    println!("TEXT: {}", panel.get_text());
-    println!();
-
-    print!("{:^12} |", "");
-    for c in 0..built.layout.cols {
-        print!("{:^12} |", c);
-    }
-    println!();
-
-    for r in 0..built.layout.rows {
-        print!("{:^12} |", r);
-        for c in 0..built.layout.cols {
-            let idx = (r * built.layout.cols) + c;
-            let label =
-                match built.buttons[idx] {
-                    Some(button) => button.label.clone(),
-                    _           => "".to_string(),
-                };
-            print!("{:^12} |", label);
-        }
-        println!();
-    }
-}
-
-fn read(input: &mut String) {
-    std::io::stdin().read_line(input).unwrap();
-}
-
-fn process<'a>(panel: &'a mut Panel, speech_engine: &mut SpeechEngine, board: &'a Board, input: &'a String) -> Result<Board, &'static str> {
-    let built = board.build().unwrap();
-
-    let words: Vec<&str> = input.split_whitespace().collect();
-    let len = words.len();
-
-    if len != 0 && len != 2 {
-        return Err("expected `<col> <row>`, e.g. `2 3`")
-    }
-
-    if len != 0 {
-        let col_str = words[0];
-        let row_str = words[1];
-
-        let col: usize = col_str.parse().map_err(|_| "column (first argument) was not a number")?;
-        let row: usize = row_str.parse().map_err(|_| "row (second argument) was not a number")?;
-
-        let btn = built.get_button(col, row).ok_or("no such button")?;
-
-        panel.apply_button(btn, speech_engine);
-    }
-
-    Ok(board.clone())
+    let native_options = eframe::NativeOptions::default();
+    eframe::run_native("AACApp", native_options, Box::new(|cc| Box::new(App::new(cc))));
 }
