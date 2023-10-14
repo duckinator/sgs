@@ -45,7 +45,6 @@ fn test_panel() {
     let exc = Button { label: "!".to_string(), pronunciation: None, image: None };
 
     let mut panel = Panel::new();
-    let mut speech = SpeechEngine::new();
 
     panel.add_entry(&foo);
     panel.add_entry(&bar);
