@@ -35,14 +35,30 @@ impl App {
 impl eframe::App for App {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::TopBottomPanel::top("panel").show(ctx, |ui| {
-            ui.horizontal(|ui| {
-                for entry in &self.panel.entries {
-                    // It doesn't make sense to use a button here,
-                    // I just want each phrase to be distinguishable.
-                    //
-                    // For now, assign it to nothing.
-                    // Long term, probably use a label with a background.
-                    let _ = ui.button(entry.label.clone());
+            egui::Grid::new("panel-grid").show(ui, |ui| {
+                if ui.button("Speak").clicked() {
+                    if let Err(error) = self.panel.speak(&mut self.speech_engine) {
+                        panic!("{:?}", error);
+                    }
+                }
+
+                ui.horizontal(|ui| {
+                    for entry in &self.panel.entries {
+                        // It doesn't make sense to use a button here,
+                        // I just want each phrase to be distinguishable.
+                        //
+                        // For now, assign it to nothing.
+                        // Long term, probably use a label with a background.
+                        let _ = ui.button(entry.label.clone());
+                    }
+                });
+
+                if ui.button("Delete").clicked() {
+                    self.panel.remove_last_entry();
+                }
+
+                if ui.button("Clear").clicked() {
+                    self.panel.clear();
                 }
             });
         });
@@ -63,12 +79,7 @@ impl eframe::App for App {
                     for col in 0..layout.cols {
                         if let Some(button) = layout.get_button(col, row) {
                             if ui.button(button.label.clone()).clicked() {
-                                if let Ok(_) = self.panel.apply_button(button, &mut self.speech_engine) {
-                                    // success
-                                } else {
-                                    // TODO: Show a dialog or something.
-                                    println!("TTS failed!");
-                                }
+                                self.panel.apply_button(button, &mut self.speech_engine);
                             }
                         } else {
                             // No button for (row, col).

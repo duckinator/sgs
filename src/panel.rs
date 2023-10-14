@@ -34,22 +34,20 @@ impl Panel {
         self.entries.iter().map(|e| e.get_pronouncible_text()).collect::<Vec<_>>().join(" ")
     }
 
+    pub fn speak(&mut self, speech_engine: &mut SpeechEngine) -> Result<(), String> {
+        speech_engine.speak(self.get_pronouncible_text())?;
+        self.clear();
+        Ok(())
+    }
+
     // FIXME: Where the fuck should this go?
     // It modifies a Panel, but also uses a Button and a SpeechEngine.
-    pub fn apply_button(&mut self, button: &Button, speech_engine: &mut SpeechEngine) -> Result<(), String>{
+    pub fn apply_button(&mut self, button: &Button, speech_engine: &mut SpeechEngine) {
         match &button.action {
-            Action::Speak => speech_engine.speak(button.get_pronouncible_text()),
-            Action::SpeakBuiltPhrase => {
-                let ret = speech_engine.speak(self.get_pronouncible_text());
-                // If TTS succeeded, clear the text.
-                if let Ok(_) = ret {
-                    self.clear();
-                }
-                ret
-            },
-            Action::Append => { self.add_entry(button); Ok(()) },
-            Action::SelectBoard => Err("board selection not implemented".to_string()),
-            Action::RemoveLast => { self.remove_last_entry(); Ok(()) },
+            Action::Speak => speech_engine.speak(button.get_pronouncible_text()).expect("Failed to speak word"),
+            Action::SpeakBuiltPhrase => self.speak(speech_engine).expect("Failed to speak built phrase"),
+            Action::Append => self.add_entry(button),
+            Action::RemoveLast => self.remove_last_entry(),
         }
     }
 
@@ -66,14 +64,14 @@ fn test_panel() {
     let mut panel = Panel::new();
     let mut speech = SpeechEngine::new();
 
-    panel.apply_button(&foo, &mut speech).expect("failed to apply button foo");
-    panel.apply_button(&bar, &mut speech).expect("failed to apply button bar");
-    panel.apply_button(&baz, &mut speech).expect("failed to apply button baz");
-    panel.apply_button(&exc, &mut speech).expect("failed to apply button exc, the first time");
-    panel.apply_button(&exc, &mut speech).expect("failed to apply button exc, the second time");
+    panel.apply_button(&foo, &mut speech);
+    panel.apply_button(&bar, &mut speech);
+    panel.apply_button(&baz, &mut speech);
+    panel.apply_button(&exc, &mut speech);
+    panel.apply_button(&exc, &mut speech);
     assert_eq!("foo bar baz ! !", panel.get_text());
 
-    panel.apply_button(&delete, &mut speech).expect("failed to apply button delete");
+    panel.apply_button(&delete, &mut speech);
     assert_eq!("foo bar baz !", panel.get_text());
 
     panel.remove_last_entry();

@@ -6,7 +6,6 @@ pub enum Action {
     Speak,
     SpeakBuiltPhrase,
     Append,
-    SelectBoard,
     RemoveLast,
 }
 
@@ -18,7 +17,6 @@ impl FromStr for Action {
             "Speak" => Ok(Action::Speak),
             "SpeakBuiltPhrase" => Ok(Action::SpeakBuiltPhrase),
             "Append" => Ok(Action::Append),
-            "SelectBoard" => Ok(Action::SelectBoard),
             "RemoveLast" => Ok(Action::RemoveLast),
             _ => Err(format!("unknown Action: {}", input)),
         }
