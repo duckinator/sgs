@@ -18,7 +18,7 @@ Linux_task:
     image: rust:1.73
   install_script:
     - apt-get update
-    - apt-get install -y libclang-dev
+    - apt-get install -y libclang-dev libspeechd-dev
   cargo_build_script:
     - cargo test --no-run
   script:
