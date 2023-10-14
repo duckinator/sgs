@@ -2,7 +2,7 @@ use crate::button::{Button, Action};
 use crate::speech::SpeechEngine;
 
 pub struct Panel {
-    entries: Vec<Button>,
+    pub entries: Vec<Button>,
 }
 
 impl Panel {
