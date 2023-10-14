@@ -1,4 +1,4 @@
-use tts::{Error, Tts, UtteranceId};
+use tts::Tts;
 
 // TODO: Integrate macOS stuff, if I ever get a Mac to test it on. https://github.com/ndarilek/tts-rs/blob/master/examples/hello_world.rs
 
@@ -14,10 +14,13 @@ impl SpeechEngine {
         SpeechEngine { tts }
     }
 
-    pub fn speak<S: Into<String>>(&mut self, text: S) {
+    pub fn speak<S: Into<String>>(&mut self, text: S) -> Result<(), String> {
         // true = interrupt current speech; false = don't interrupt current speech.
         let interrupt = true;
 
-        self.tts.speak(text, interrupt);
+        match self.tts.speak(text, interrupt) {
+            Ok(_) => Ok(()),
+            Err(e) => Err(e.to_string())
+        }
     }
 }

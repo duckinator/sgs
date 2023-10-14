@@ -1,4 +1,7 @@
-use crate::button::{Action, Button};
+#[cfg(test)]
+use crate::button::Action;
+
+use crate::button::Button;
 
 use std::collections::HashMap;
 use nanoserde::{DeJson, DeJsonErr, SerJson};

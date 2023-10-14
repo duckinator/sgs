@@ -14,7 +14,7 @@ struct App {
 }
 
 impl App {
-    fn new(cc: &eframe::CreationContext<'_>) -> Self {
+    fn new(_cc: &eframe::CreationContext<'_>) -> Self {
         // Customize egui here with cc.egui_ctx.set_fonts and cc.egui_ctx.set_visuals.
         // Restore app state using cc.storage (requires the "persistence" feature).
         // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
@@ -33,11 +33,16 @@ impl App {
 }
 
 impl eframe::App for App {
-    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::TopBottomPanel::top("panel").show(ctx, |ui| {
             ui.horizontal(|ui| {
                 for entry in &self.panel.entries {
-                    ui.button(entry.label.clone());
+                    // It doesn't make sense to use a button here,
+                    // I just want each phrase to be distinguishable.
+                    //
+                    // For now, assign it to nothing.
+                    // Long term, probably use a label with a background.
+                    let _ = ui.button(entry.label.clone());
                 }
             });
         });
@@ -49,7 +54,12 @@ impl eframe::App for App {
                     for col in 0..built.layout.cols {
                         if let Some(button) = built.get_button(col, row) {
                             if ui.button(button.label.clone()).clicked() {
-                                self.panel.apply_button(button, &mut self.speech_engine);
+                                if let Ok(_) = self.panel.apply_button(button, &mut self.speech_engine) {
+                                    // success
+                                } else {
+                                    // TODO: Show a dialog or something.
+                                    println!("TTS failed!");
+                                }
                             }
                         } else {
                             // No button for (row, col).
@@ -66,5 +76,5 @@ impl eframe::App for App {
 
 fn main() {
     let native_options = eframe::NativeOptions::default();
-    eframe::run_native("AACApp", native_options, Box::new(|cc| Box::new(App::new(cc))));
+    eframe::run_native("AACApp", native_options, Box::new(|cc| Box::new(App::new(cc)))).expect("Could not start GUI.");
 }

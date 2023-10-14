@@ -36,16 +36,20 @@ impl Panel {
 
     // FIXME: Where the fuck should this go?
     // It modifies a Panel, but also uses a Button and a SpeechEngine.
-    pub fn apply_button(&mut self, button: &Button, speech_engine: &mut SpeechEngine) {
+    pub fn apply_button(&mut self, button: &Button, speech_engine: &mut SpeechEngine) -> Result<(), String>{
         match &button.action {
             Action::Speak => speech_engine.speak(button.get_pronouncible_text()),
             Action::SpeakBuiltPhrase => {
-                speech_engine.speak(self.get_pronouncible_text());
-                self.clear();
+                let ret = speech_engine.speak(self.get_pronouncible_text());
+                // If TTS succeeded, clear the text.
+                if let Ok(_) = ret {
+                    self.clear();
+                }
+                ret
             },
-            Action::Append => self.add_entry(button),
-            Action::SelectBoard => panic!("board selection not implemented"),
-            Action::RemoveLast => self.remove_last_entry(),
+            Action::Append => { self.add_entry(button); Ok(()) },
+            Action::SelectBoard => Err("board selection not implemented".to_string()),
+            Action::RemoveLast => { self.remove_last_entry(); Ok(()) },
         }
     }
 
