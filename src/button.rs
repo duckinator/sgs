@@ -1,7 +1,5 @@
 use nanoserde::{DeJson, SerJson};
 
-
-
 #[derive(Clone, Debug, DeJson, SerJson, PartialEq)]
 pub struct Button {
     pub label: String,
