@@ -64,15 +64,16 @@ fn test_panel() {
     let delete = Button { label: "[Backspace]".to_string(), pronunciation: None, image: None, action: Action::RemoveLast };
 
     let mut panel = Panel::new();
+    let mut speech = SpeechEngine::new();
 
-    panel.apply_button(&foo);
-    panel.apply_button(&bar);
-    panel.apply_button(&baz);
-    panel.apply_button(&exc);
-    panel.apply_button(&exc);
+    panel.apply_button(&foo, &mut speech).expect("failed to apply button foo");
+    panel.apply_button(&bar, &mut speech).expect("failed to apply button bar");
+    panel.apply_button(&baz, &mut speech).expect("failed to apply button baz");
+    panel.apply_button(&exc, &mut speech).expect("failed to apply button exc, the first time");
+    panel.apply_button(&exc, &mut speech).expect("failed to apply button exc, the second time");
     assert_eq!("foo bar baz ! !", panel.get_text());
 
-    panel.apply_button(&delete);
+    panel.apply_button(&delete, &mut speech).expect("failed to apply button delete");
     assert_eq!("foo bar baz !", panel.get_text());
 
     panel.remove_last_entry();

@@ -3,47 +3,27 @@
     "format_version": 0,
     "name": "Example Board",
     "description": "This is an example board.",
-    "buttons": {
-        "Hey!": {
-            "label": "Hey!",
-            "image": null,
-            "action": "Speak"
-        },
-        "hello": {
-            "label": "hello",
-            "image": null,
-            "action": "Append"
-        },
-        "world": {
-            "label": "world",
-            "image": "world",
-            "action": "Append"
-        },
-        "[exclamation-mark]": {
-            "label": "!",
-            "action": "Append"
-        },
-        "[speak]": {
-            "label": "[SPEAK]",
-            "action": "SpeakBuiltPhrase"
-        },
-        "[backspace]": {
-            "label": "[Backspace]",
-            "image": null,
-            "action": "RemoveLast"
-        }
-    },
     "images": {
         "what": "what.png"
     },
-    "layout": {
-        "rows": 4,
-        "cols": 6,
-        "order": [
-            "hello", "world", null, null, "[backspace]", "[speak]",
-            "Hey!", null, null, null, null, null,
-            null, null, null, null, null, null,
-            "[exclamation-mark]", null, null, null, null, "world"
-        ]
-    }
+    "layouts": [
+        {
+            "name": "Home",
+            "default": true,
+            "rows": 4,
+            "cols": 6,
+            "buttons": [
+                {"label": "hello", "action": "Append"},
+                {"label": "world", "action": "Append"},
+                null,
+                null,
+                {"label": "[backspace]", "action": "RemoveLast" },
+                {"label": "[speak]", "action": "SpeakBuiltPhrase" },
+
+                {"label": "Hey!", "action": "Speak"}, null, null, null, null, null,
+                null, null, null, null, null, null,
+                {"label": "!", "action": "Append"}, null, null, null, null, null
+            ]
+        }
+    ]
 }

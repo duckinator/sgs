@@ -9,8 +9,8 @@ use sgs::speech::SpeechEngine;
 struct App {
     speech_engine: SpeechEngine,
     panel: Panel,
-    home: Board,
     board: Board,
+    current_layout: usize,
 }
 
 impl App {
@@ -23,12 +23,12 @@ impl App {
         let panel = Panel::new();
 
         let path = "board.json";
-        let home : Board = fs::read_to_string(path).map(|contents|
+        let board: Board = fs::read_to_string(path).map(|contents|
             Board::load_str(&contents).unwrap()
         ).unwrap();
-        let board = home.clone();
+        let current_layout = board.default_layout();
 
-        Self { speech_engine, panel, home, board }
+        Self { speech_engine, panel, board, current_layout }
     }
 }
 
@@ -47,12 +47,20 @@ impl eframe::App for App {
             });
         });
 
+        egui::SidePanel::left("board-selector").show(ctx, |ui| {
+            ui.vertical(|ui| {
+                for (idx, layout) in self.board.layouts.iter().enumerate() {
+                    ui.selectable_value(&mut self.current_layout, idx, layout.name.clone());
+                }
+            });
+        });
+
         egui::CentralPanel::default().show(ctx, |ui| {
             egui::Grid::new("board").show(ui, |ui| {
-                let built = self.board.build().unwrap();
-                for row in 0..built.layout.rows {
-                    for col in 0..built.layout.cols {
-                        if let Some(button) = built.get_button(col, row) {
+                let layout = &self.board.layouts[self.current_layout];
+                for row in 0..layout.rows {
+                    for col in 0..layout.cols {
+                        if let Some(button) = layout.get_button(col, row) {
                             if ui.button(button.label.clone()).clicked() {
                                 if let Ok(_) = self.panel.apply_button(button, &mut self.speech_engine) {
                                     // success
