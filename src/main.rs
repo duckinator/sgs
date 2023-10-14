@@ -19,8 +19,8 @@ impl App {
         // Restore app state using cc.storage (requires the "persistence" feature).
         // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
         // for e.g. egui::PaintCallback.
-        let speech_engine = SpeechEngine::new();
-        let panel = Panel::new();
+        let speech_engine = SpeechEngine::default();
+        let panel = Panel::default();
 
         let board: Board = Board::load_file("board.json");
         let current_layout = board.default_layout();

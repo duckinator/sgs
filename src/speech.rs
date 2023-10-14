@@ -6,14 +6,16 @@ pub struct SpeechEngine {
     pub tts: Tts,
 }
 
-impl SpeechEngine {
-    pub fn new() -> Self {
+impl Default for SpeechEngine {
+    fn default() -> Self {
         // FIXME: Doesn't work on FreeBSD. This is an upstream problem: https://github.com/ndarilek/tts-rs/
         let tts = Tts::default().expect("Could not set up text-to-speech system.");
 
         SpeechEngine { tts }
     }
+}
 
+impl SpeechEngine {
     pub fn speak<S: Into<String>>(&mut self, text: S) -> Result<(), String> {
         // true = interrupt current speech; false = don't interrupt current speech.
         let interrupt = true;

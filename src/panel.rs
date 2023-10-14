@@ -1,15 +1,12 @@
 use crate::button::Button;
 use crate::speech::SpeechEngine;
 
+#[derive(Default)]
 pub struct Panel {
     pub entries: Vec<Button>,
 }
 
 impl Panel {
-    pub fn new() -> Self {
-        Self { entries: vec![] }
-    }
-
     pub fn add_entry(&mut self, button: &Button) {
         self.entries.push(button.clone());
     }
