@@ -45,9 +45,7 @@ impl Panel {
     pub fn apply_button(&mut self, button: &Button, speech_engine: &mut SpeechEngine) {
         match &button.action {
             Action::Speak => speech_engine.speak(button.get_pronouncible_text()).expect("Failed to speak word"),
-            Action::SpeakBuiltPhrase => self.speak(speech_engine).expect("Failed to speak built phrase"),
             Action::Append => self.add_entry(button),
-            Action::RemoveLast => self.remove_last_entry(),
         }
     }
 
@@ -59,7 +57,6 @@ fn test_panel() {
     let bar = Button { label: "bar".to_string(), pronunciation: None, image: None, action: Action::Append };
     let baz = Button { label: "baz".to_string(), pronunciation: None, image: None, action: Action::Append };
     let exc = Button { label: "!".to_string(), pronunciation: None, image: None, action: Action::Append };
-    let delete = Button { label: "[Backspace]".to_string(), pronunciation: None, image: None, action: Action::RemoveLast };
 
     let mut panel = Panel::new();
     let mut speech = SpeechEngine::new();
@@ -70,9 +67,6 @@ fn test_panel() {
     panel.apply_button(&exc, &mut speech);
     panel.apply_button(&exc, &mut speech);
     assert_eq!("foo bar baz ! !", panel.get_text());
-
-    panel.apply_button(&delete, &mut speech);
-    assert_eq!("foo bar baz !", panel.get_text());
 
     panel.remove_last_entry();
     assert_eq!("foo bar baz", panel.get_text());

@@ -15,10 +15,7 @@
             "buttons": [
                 {"label": "hello", "action": "Append"},
                 {"label": "world", "action": "Append"},
-                null,
-                null,
-                {"label": "[backspace]", "action": "RemoveLast" },
-                {"label": "[speak]", "action": "SpeakBuiltPhrase" },
+                null, null, null, null,
 
                 {"label": "Hey!", "action": "Speak"}, null, null, null, null, null,
                 null, null, null, null, null, null,

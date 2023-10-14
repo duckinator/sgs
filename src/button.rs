@@ -4,9 +4,7 @@ use nanoserde::{DeJson, SerJson};
 #[derive(Clone, Copy, Debug, DeJson, SerJson, PartialEq)]
 pub enum Action {
     Speak,
-    SpeakBuiltPhrase,
     Append,
-    RemoveLast,
 }
 
 impl FromStr for Action {
@@ -15,9 +13,7 @@ impl FromStr for Action {
     fn from_str(input: &str) -> Result<Action, Self::Err> {
         match input {
             "Speak" => Ok(Action::Speak),
-            "SpeakBuiltPhrase" => Ok(Action::SpeakBuiltPhrase),
             "Append" => Ok(Action::Append),
-            "RemoveLast" => Ok(Action::RemoveLast),
             _ => Err(format!("unknown Action: {}", input)),
         }
     }
