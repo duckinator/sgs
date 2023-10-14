@@ -10,6 +10,7 @@ use nanoserde::{DeJson, DeJsonErr, SerJson};
 pub struct Layout {
     pub name: String,
     pub default: bool,
+    pub immediate: bool,
     pub rows: usize,
     pub cols: usize,
     pub buttons: Vec<Option<Button>>,

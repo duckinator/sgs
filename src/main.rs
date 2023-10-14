@@ -79,7 +79,11 @@ impl eframe::App for App {
                     for col in 0..layout.cols {
                         if let Some(button) = layout.get_button(col, row) {
                             if ui.button(button.label.clone()).clicked() {
-                                self.panel.apply_button(button, &mut self.speech_engine);
+                                if layout.immediate {
+                                    self.speech_engine.speak(button.get_pronouncible_text()).expect("Failed to speak word");
+                                } else {
+                                    self.panel.add_entry(button);
+                                }
                             }
                         } else {
                             // No button for (row, col).

@@ -10,16 +10,31 @@
         {
             "name": "Home",
             "default": true,
+            "immediate": false,
             "rows": 4,
             "cols": 6,
             "buttons": [
-                {"label": "hello", "action": "Append"},
-                {"label": "world", "action": "Append"},
+                {"label": "hello"},
+                {"label": "world"},
                 null, null, null, null,
 
-                {"label": "Hey!", "action": "Speak"}, null, null, null, null, null,
                 null, null, null, null, null, null,
-                {"label": "!", "action": "Append"}, null, null, null, null, null
+                null, null, null, null, null, null,
+                {"label": "!"}, null, null, null, null, null
+            ]
+        },
+
+        {
+            "name": "Quick Responses",
+            "default": false,
+            "immediate": true,
+            "rows": 4,
+            "cols": 6,
+            "buttons": [
+                {"label": "Hey!" }, null, null, null, null, null,
+                null, null, null, null, null, null,
+                null, null, null, null, null, null,
+                null, null, null, null, null, null
             ]
         }
     ]

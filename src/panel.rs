@@ -1,4 +1,4 @@
-use crate::button::{Button, Action};
+use crate::button::Button;
 use crate::speech::SpeechEngine;
 
 pub struct Panel {
@@ -10,11 +10,7 @@ impl Panel {
         Self { entries: vec![] }
     }
 
-   pub fn add_entry(&mut self, button: &Button) {
-        if button.action != Action::Append {
-            panic!("Panel::add_entry() should only be used with buttons that have the type of Action::Append");
-        }
-
+    pub fn add_entry(&mut self, button: &Button) {
         self.entries.push(button.clone());
     }
 
@@ -39,16 +35,6 @@ impl Panel {
         self.clear();
         Ok(())
     }
-
-    // FIXME: Where the fuck should this go?
-    // It modifies a Panel, but also uses a Button and a SpeechEngine.
-    pub fn apply_button(&mut self, button: &Button, speech_engine: &mut SpeechEngine) {
-        match &button.action {
-            Action::Speak => speech_engine.speak(button.get_pronouncible_text()).expect("Failed to speak word"),
-            Action::Append => self.add_entry(button),
-        }
-    }
-
 }
 
 #[test]
@@ -61,11 +47,11 @@ fn test_panel() {
     let mut panel = Panel::new();
     let mut speech = SpeechEngine::new();
 
-    panel.apply_button(&foo, &mut speech);
-    panel.apply_button(&bar, &mut speech);
-    panel.apply_button(&baz, &mut speech);
-    panel.apply_button(&exc, &mut speech);
-    panel.apply_button(&exc, &mut speech);
+    panel.add_entry(&foo);
+    panel.add_entry(&bar);
+    panel.add_entry(&baz);
+    panel.add_entry(&exc);
+    panel.add_entry(&exc);
     assert_eq!("foo bar baz ! !", panel.get_text());
 
     panel.remove_last_entry();
