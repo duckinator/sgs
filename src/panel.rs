@@ -41,7 +41,7 @@ fn test_panel() {
     let baz = Button { label: "baz".to_string(), pronunciation: None, image: None };
     let exc = Button { label: "!".to_string(), pronunciation: None, image: None };
 
-    let mut panel = Panel::new();
+    let mut panel = Panel::default();
 
     panel.add_entry(&foo);
     panel.add_entry(&bar);
