@@ -17,8 +17,8 @@ Linux_task:
   container:
     image: rust:1.73
   install_script:
-    - apt update
-    - apt install libclang-dev
+    - apt-get update
+    - apt-get install -y libclang-dev
   cargo_build_script:
     - cargo test --no-run
   script:
