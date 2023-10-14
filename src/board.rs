@@ -32,11 +32,11 @@ impl Layout {
 }
 
 impl Board {
-    /*pub fn load_file(path: &str) -> Board {
+    pub fn load_file(path: &str) -> Board {
         std::fs::read_to_string(path).map(|contents|
             Board::load_str(&contents).unwrap()
         ).unwrap()
-    }*/
+    }
 
     pub fn load_str(json: &str) -> Result<Board, DeJsonErr> {
         DeJson::deserialize_json(json)

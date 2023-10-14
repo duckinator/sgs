@@ -22,10 +22,7 @@ impl App {
         let speech_engine = SpeechEngine::new();
         let panel = Panel::new();
 
-        let path = "board.json";
-        let board: Board = fs::read_to_string(path).map(|contents|
-            Board::load_str(&contents).unwrap()
-        ).unwrap();
+        let board: Board = Board::load_file("board.json");
         let current_layout = board.default_layout();
 
         Self { speech_engine, panel, board, current_layout }
