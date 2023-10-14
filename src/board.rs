@@ -1,6 +1,3 @@
-#[cfg(test)]
-use crate::button::Action;
-
 use crate::button::Button;
 
 use std::collections::HashMap;
@@ -68,27 +65,45 @@ fn test_board() {
             {
                 "name": "Home",
                 "default": true,
+                "immediate": false,
                 "rows": 4,
                 "cols": 6,
                 "buttons": [
-                    {"label": "hello", "action": "Append"}, {"label": "world", "action": "Append"}, null, null, null, null,
+                    {"label": "hello"}, {"label": "world"}, null, null, null, null,
                     null, null, null, null, null, null,
                     null, null, null, null, null, null,
-                    null, null, null, null, null, {"label": "what", "action": "Append", "image": "what-img"},
+                    null, null, null, null, null, {"label": "what", "image": "what-img"},
+                ]
+            },
+            {
+                "name": "Quick Response",
+                "default": false,
+                "immediate": true,
+                "rows": 1,
+                "cols": 1,
+                "buttons": [
+                    {"label": "Hey!"}
                 ]
             }
         ]
     }"#;
 
     let board: Board = DeJson::deserialize_json(json).unwrap();
+    assert_eq!(0, board.default_layout());
     let layout = &board.layouts[board.default_layout()];
 
     assert_eq!("Home", layout.name);
     assert_eq!(true, layout.default);
+    assert_eq!(false, layout.immediate);
 
     assert_eq!("hello", layout.buttons[0].as_ref().unwrap().label);
     assert_eq!("world", layout.buttons[1].as_ref().unwrap().label);
     assert_eq!("what", layout.buttons[4 * 6 - 1].as_ref().unwrap().label);
     assert_eq!(Some("what-img".to_string()), layout.buttons[4 * 6 - 1].as_ref().unwrap().image);
-    assert_eq!(Action::Append, layout.buttons[0].as_ref().unwrap().action);
+
+    let quick_layout = &board.layouts[1];
+    assert_eq!("Quick Response", quick_layout.name);
+    assert_eq!(false, quick_layout.default);
+    assert_eq!(true, quick_layout.immediate);
+    assert_eq!("Hey!", quick_layout.buttons[0].as_ref().unwrap().label);
 }

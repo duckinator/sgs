@@ -39,10 +39,10 @@ impl Panel {
 
 #[test]
 fn test_panel() {
-    let foo = Button { label: "foo".to_string(), pronunciation: None, image: None, action: Action::Append };
-    let bar = Button { label: "bar".to_string(), pronunciation: None, image: None, action: Action::Append };
-    let baz = Button { label: "baz".to_string(), pronunciation: None, image: None, action: Action::Append };
-    let exc = Button { label: "!".to_string(), pronunciation: None, image: None, action: Action::Append };
+    let foo = Button { label: "foo".to_string(), pronunciation: None, image: None };
+    let bar = Button { label: "bar".to_string(), pronunciation: None, image: None };
+    let baz = Button { label: "baz".to_string(), pronunciation: None, image: None };
+    let exc = Button { label: "!".to_string(), pronunciation: None, image: None };
 
     let mut panel = Panel::new();
     let mut speech = SpeechEngine::new();
@@ -54,6 +54,7 @@ fn test_panel() {
     panel.add_entry(&exc);
     assert_eq!("foo bar baz ! !", panel.get_text());
 
+    panel.remove_last_entry();
     panel.remove_last_entry();
     assert_eq!("foo bar baz", panel.get_text());
 
