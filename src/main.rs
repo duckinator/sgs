@@ -47,10 +47,11 @@ impl eframe::App for App {
             });
         });
 
-        egui::SidePanel::left("board-selector").show(ctx, |ui| {
-            ui.vertical(|ui| {
+        egui::SidePanel::left("layout-selector").show(ctx, |ui| {
+            egui::Grid::new("layout-selector-grid").show(ui, |ui| {
                 for (idx, layout) in self.board.layouts.iter().enumerate() {
                     ui.selectable_value(&mut self.current_layout, idx, layout.name.clone());
+                    ui.end_row();
                 }
             });
         });
