@@ -1,0 +1,12 @@
+so, a potential setup that's kinda rolling around my head atm would look like...
+
+button: a single interactive element, representing a word or phrase.
+
+folder: a screenful of buttons, with a unique name/ID, plus whether buttons in it should be quick-fires or appended.
+
+system: a group of folders, plus the name/ID of the default folder, plus information on the order of the folders in the list on the left side.
+
+profile: various metadata + a system specifying only what buttons are different from the base system (all others are set to null/None or equivalent).
+
+
+and systems would work similar to stylesheets in CSS, cascading so that the later ones override earlier ones.
