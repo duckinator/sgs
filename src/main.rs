@@ -1,14 +1,14 @@
 use eframe::egui;
 
-use sgs::board::Board;
+use sgs::system::System;
 use sgs::panel::Panel;
 use sgs::speech::SpeechEngine;
 
 struct App {
     speech_engine: SpeechEngine,
     panel: Panel,
-    board: Board,
-    current_layout: usize,
+    system: System,
+    current_folder: usize,
 }
 
 impl App {
@@ -20,10 +20,10 @@ impl App {
         let speech_engine = SpeechEngine::default();
         let panel = Panel::default();
 
-        let board: Board = Board::load_file("board.json");
-        let current_layout = board.default_layout();
+        let system: System = System::load_file("system.json");
+        let current_folder = system.default_folder();
 
-        Self { speech_engine, panel, board, current_layout }
+        Self { speech_engine, panel, system, current_folder }
     }
 }
 
@@ -39,7 +39,7 @@ impl eframe::App for App {
                 // With each [] being a sub-grid:
                 // | [Speak]           | [Panel] | [Delete, Clear] |
                 // -------------------------------------------------
-                // | [Layout selector] | [system] | [extra]        |
+                // | [Folder selector] | [system] | [extra]        |
 
                 // Row 1, Column 1
                 egui::Grid::new("top-left").show(ui, |ui| {
@@ -53,7 +53,7 @@ impl eframe::App for App {
 
                 // Row 1, Column 2
                 egui::Grid::new("top-center").show(ui, |ui| {
-                    let cols = self.board.layouts[self.current_layout].cols;
+                    let cols = self.system.folders[self.current_folder].cols;
                     let inner_spacing = ui.ctx().style().spacing.item_spacing[0];
                     let max_width = (cols as f32) * (button_size[0] + inner_spacing);
 
@@ -92,25 +92,25 @@ impl eframe::App for App {
                 ui.end_row();
 
                 // Row 2, Column 1
-                egui::Grid::new("layout-selector-grid").show(ui, |ui| {
-                    for (idx, layout) in self.board.layouts.iter().enumerate() {
-                        let egui_button = egui::Button::new(layout.name.clone()).selected(self.current_layout == idx);
+                egui::Grid::new("folder-selector-grid").show(ui, |ui| {
+                    for (idx, folder) in self.system.folders.iter().enumerate() {
+                        let egui_button = egui::Button::new(folder.name.clone()).selected(self.current_folder == idx);
                         if ui.add_sized(button_size, egui_button).clicked() {
-                            self.current_layout = idx;
+                            self.current_folder = idx;
                         }
                         ui.end_row();
                     }
                 });
 
                 // Row 2, Column 2
-                egui::Grid::new("board").show(ui, |ui| {
-                    let layout = &self.board.layouts[self.current_layout];
-                    for row in 0..layout.rows {
-                        for col in 0..layout.cols {
-                            if let Some(button) = layout.get_button(col, row) {
+                egui::Grid::new("active-folder").show(ui, |ui| {
+                    let folder = &self.system.folders[self.current_folder];
+                    for row in 0..folder.rows {
+                        for col in 0..folder.cols {
+                            if let Some(button) = folder.get_button(col, row) {
                                 let egui_button = egui::Button::new(button.label.clone());
                                 if ui.add_sized(button_size, egui_button).clicked() {
-                                    if layout.immediate {
+                                    if folder.immediate {
                                         self.speech_engine.speak(button.get_pronouncible_text()).expect("Failed to speak word");
                                     } else {
                                         self.panel.add_entry(button);
@@ -125,8 +125,6 @@ impl eframe::App for App {
                         }
                         ui.end_row();
                     }
-
-                    //Ok(self.board.clone());
                 });
 
                 // Row 3, Column 3

@@ -1,12 +1,7 @@
 {
-    "format": "sgs-board",
-    "format_version": 0,
-    "name": "Example Board",
-    "description": "This is an example board.",
-    "images": {
-        "what": "what.png"
-    },
-    "layouts": [
+    "name": "Example System",
+    "description": "This is an example system.",
+    "folders": [
         {
             "name": "Home",
             "default": true,

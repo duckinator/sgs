@@ -1,12 +1,12 @@
-#sgs-board
+#sgs
 
-name = "Example board."
-description = "This is an example board."
+name = "Example system."
+description = "This is an example system."
 
 rows = 2
 cols = 3
 
-:Example Board (append)
+:Example Folder (append)
 	"1"	"2"	"3"
 	"4"	"5"	"6"
 .
