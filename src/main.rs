@@ -29,7 +29,10 @@ impl App {
 
 impl eframe::App for App {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::TopBottomPanel::top("panel").show(ctx, |ui| {
+        let inner_margin = egui::style::Margin::same(10.0);
+        let frame = egui::containers::Frame::central_panel(&ctx.style()).inner_margin(inner_margin);
+
+        egui::TopBottomPanel::top("panel").frame(frame).show(ctx, |ui| {
             egui::Grid::new("panel-grid").show(ui, |ui| {
                 if ui.button("Speak").clicked() {
                     if let Err(error) = self.panel.speak(&mut self.speech_engine) {
@@ -58,7 +61,7 @@ impl eframe::App for App {
             });
         });
 
-        egui::SidePanel::left("layout-selector").show(ctx, |ui| {
+        egui::SidePanel::left("layout-selector").frame(frame).show(ctx, |ui| {
             egui::Grid::new("layout-selector-grid").show(ui, |ui| {
                 for (idx, layout) in self.board.layouts.iter().enumerate() {
                     let button = egui::Button::new(layout.name.clone()).selected(self.current_layout == idx);
@@ -70,7 +73,7 @@ impl eframe::App for App {
             });
         });
 
-        egui::CentralPanel::default().show(ctx, |ui| {
+        egui::CentralPanel::default().frame(frame).show(ctx, |ui| {
             egui::Grid::new("board").show(ui, |ui| {
                 let layout = &self.board.layouts[self.current_layout];
                 for row in 0..layout.rows {
