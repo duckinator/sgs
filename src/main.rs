@@ -53,9 +53,9 @@ impl eframe::App for App {
 
                 // Row 1, Column 2
                 egui::Grid::new("top-center").show(ui, |ui| {
-                    let cols = 9.0;
+                    let cols = self.board.layouts[self.current_layout].cols;
                     let inner_spacing = ui.ctx().style().spacing.item_spacing[0];
-                    let max_width = cols * (button_size[0] + inner_spacing);
+                    let max_width = (cols as f32) * (button_size[0] + inner_spacing);
 
                     ui.with_layout(egui::Layout::left_to_right(egui::Align::TOP).with_main_wrap(true), |ui| {
                         ui.set_max_width(max_width);
@@ -67,7 +67,11 @@ impl eframe::App for App {
                             // For now, assign it to nothing.
                             // Long term, probably use a label with a background.
                             let egui_button = egui::Button::new(entry.label.clone());
-                            let _ = ui.add_sized(button_size, egui_button);
+                            if self.panel.entries.len() > cols {
+                                let _ = ui.add(egui_button);
+                            } else {
+                                let _ = ui.add_sized(button_size, egui_button);
+                            };
                         }
                     });
                 });
