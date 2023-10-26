@@ -4,15 +4,32 @@ use sgs::system::System;
 use sgs::panel::Panel;
 use sgs::speech::SpeechEngine;
 
+const MIN_WIDTH: f32 = 1280.0;
+const MIN_HEIGHT: f32 = 720.0;
+
 const COLS: f32 = 12.0;
 const ROWS: f32 = 8.0;
 
-const BUTTON_WIDTH: f32 = 80.0;
-const BUTTON_HEIGHT: f32 = 80.0;
-const BUTTON_SIZE: [f32; 2] = [BUTTON_WIDTH, BUTTON_HEIGHT];
-
 const ITEM_SPACING: f32 = 5.0;
 const MARGIN: f32 = 10.0;
+
+// ((BUTTON_WIDTH + ITEM_SPACING) * COLS) + (MARGIN * 2) - ITEM_SPACING
+// ((100 + 5) * 12) + (10 * 2) - 5
+// (105 * 12) + 20 - 5
+// 1260 + 20 - 5
+// 1280 - 5
+// =>
+// 1275
+const BUTTON_WIDTH: f32 = 100.0;
+// ((BUTTON_HEIGHT + ITEM_SPACING) * ROWS) + (MARGIN * 2) - ITEM_SPACING
+// ((83 + 5) * 8) + (10 * 2) - 5
+// (88 * 8) + 20 - 5
+// 704 + 20 - 5
+// 724 - 5
+// =>
+// 719
+const BUTTON_HEIGHT: f32 = 83.0;
+const BUTTON_SIZE: [f32; 2] = [BUTTON_WIDTH, BUTTON_HEIGHT];
 
 struct App {
     speech_engine: SpeechEngine,
@@ -151,10 +168,15 @@ fn main() {
     let width = (COLS * (BUTTON_SIZE[0] + ITEM_SPACING)) - ITEM_SPACING + (MARGIN * 2.0);
     let height = (ROWS * (BUTTON_SIZE[1] + ITEM_SPACING)) - ITEM_SPACING + (MARGIN * 2.0);
 
-    println!("Dimensions: {}x{}", width, height);
+    println!("Button size: {}x{}", BUTTON_WIDTH, BUTTON_HEIGHT);
+    println!("Window size: {}x{}", MIN_WIDTH, MIN_HEIGHT);
+    println!("Needed size: {}x{}", width, height);
+
+    assert!(width <= MIN_WIDTH);
+    assert!(height <= MIN_HEIGHT);
 
     let native_options = eframe::NativeOptions {
-        min_window_size: Some(egui::vec2(width, height)),
+        min_window_size: Some(egui::vec2(MIN_WIDTH, MIN_HEIGHT)),
         ..Default::default()
     };
     eframe::run_native("AACApp", native_options, Box::new(|cc| Box::new(App::new(cc)))).expect("Could not start GUI.");
