@@ -78,11 +78,13 @@ impl eframe::App for App {
 
                 // Row 1, Column 3
                 egui::Grid::new("top-right").show(ui, |ui| {
-                    if ui.button("Delete").clicked() {
+                    let egui_button = egui::Button::new("Delete");
+                    if ui.add_sized(button_size, egui_button).clicked() {
                         self.panel.remove_last_entry();
                     }
 
-                    if ui.button("Clear").clicked() {
+                    let egui_button = egui::Button::new("Clear");
+                    if ui.add_sized(button_size, egui_button).clicked() {
                         self.panel.clear();
                     }
                 });
