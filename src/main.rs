@@ -4,6 +4,16 @@ use sgs::system::System;
 use sgs::panel::Panel;
 use sgs::speech::SpeechEngine;
 
+const COLS: f32 = 12.0;
+const ROWS: f32 = 8.0;
+
+const BUTTON_WIDTH: f32 = 80.0;
+const BUTTON_HEIGHT: f32 = 80.0;
+const BUTTON_SIZE: [f32; 2] = [BUTTON_WIDTH, BUTTON_HEIGHT];
+
+const ITEM_SPACING: f32 = 5.0;
+const MARGIN: f32 = 10.0;
+
 struct App {
     speech_engine: SpeechEngine,
     panel: Panel,
@@ -29,10 +39,11 @@ impl App {
 
 impl eframe::App for App {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        let inner_margin = egui::style::Margin::same(10.0);
+        let inner_margin = egui::style::Margin::same(MARGIN);
+        ctx.style_mut(|style| {
+            style.spacing.item_spacing = egui::vec2(ITEM_SPACING, ITEM_SPACING);
+        });
         let frame = egui::containers::Frame::central_panel(&ctx.style()).inner_margin(inner_margin);
-
-        let button_size = [80.0, 80.0];
 
         egui::CentralPanel::default().frame(frame).show(ctx, |ui| {
             egui::Grid::new("main-grid").show(ui, |ui| {
@@ -44,7 +55,7 @@ impl eframe::App for App {
                 // Row 1, Column 1
                 egui::Grid::new("top-left").show(ui, |ui| {
                     let egui_button = egui::Button::new("Speak");
-                    if ui.add_sized(button_size, egui_button).clicked() {
+                    if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
                         if let Err(error) = self.panel.speak(&mut self.speech_engine) {
                             panic!("{:?}", error);
                         }
@@ -55,7 +66,7 @@ impl eframe::App for App {
                 egui::Grid::new("top-center").show(ui, |ui| {
                     let cols = self.system.folders[self.current_folder].cols;
                     let inner_spacing = ui.ctx().style().spacing.item_spacing[0];
-                    let max_width = (cols as f32) * (button_size[0] + inner_spacing);
+                    let max_width = (cols as f32) * (BUTTON_SIZE[0] + inner_spacing);
 
                     ui.with_layout(egui::Layout::left_to_right(egui::Align::TOP).with_main_wrap(true), |ui| {
                         ui.set_max_width(max_width);
@@ -70,7 +81,7 @@ impl eframe::App for App {
                             if self.panel.entries.len() > cols {
                                 let _ = ui.add(egui_button);
                             } else {
-                                let _ = ui.add_sized(button_size, egui_button);
+                                let _ = ui.add_sized(BUTTON_SIZE, egui_button);
                             };
                         }
                     });
@@ -79,12 +90,12 @@ impl eframe::App for App {
                 // Row 1, Column 3
                 egui::Grid::new("top-right").show(ui, |ui| {
                     let egui_button = egui::Button::new("Delete");
-                    if ui.add_sized(button_size, egui_button).clicked() {
+                    if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
                         self.panel.remove_last_entry();
                     }
 
                     let egui_button = egui::Button::new("Clear");
-                    if ui.add_sized(button_size, egui_button).clicked() {
+                    if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
                         self.panel.clear();
                     }
                 });
@@ -95,7 +106,7 @@ impl eframe::App for App {
                 egui::Grid::new("folder-selector-grid").show(ui, |ui| {
                     for (idx, folder) in self.system.folders.iter().enumerate() {
                         let egui_button = egui::Button::new(folder.name.clone()).selected(self.current_folder == idx);
-                        if ui.add_sized(button_size, egui_button).clicked() {
+                        if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
                             self.current_folder = idx;
                         }
                         ui.end_row();
@@ -109,7 +120,7 @@ impl eframe::App for App {
                         for col in 0..folder.cols {
                             if let Some(button) = folder.get_button(col, row) {
                                 let egui_button = egui::Button::new(button.label.clone());
-                                if ui.add_sized(button_size, egui_button).clicked() {
+                                if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
                                     if folder.immediate {
                                         self.speech_engine.speak(button.get_pronouncible_text()).expect("Failed to speak word");
                                     } else {
@@ -120,7 +131,7 @@ impl eframe::App for App {
                                 // No button for (row, col).
                                 //let egui_label = egui::Label::new("");
                                 let egui_label = egui::Button::new("");
-                                ui.add_sized(button_size, egui_label);
+                                ui.add_sized(BUTTON_SIZE, egui_label);
                             }
                         }
                         ui.end_row();
@@ -137,6 +148,14 @@ impl eframe::App for App {
 }
 
 fn main() {
-    let native_options = eframe::NativeOptions::default();
+    let width = (COLS * (BUTTON_SIZE[0] + ITEM_SPACING)) - ITEM_SPACING + (MARGIN * 2.0);
+    let height = (ROWS * (BUTTON_SIZE[1] + ITEM_SPACING)) - ITEM_SPACING + (MARGIN * 2.0);
+
+    println!("Dimensions: {}x{}", width, height);
+
+    let native_options = eframe::NativeOptions {
+        min_window_size: Some(egui::vec2(width, height)),
+        ..Default::default()
+    };
     eframe::run_native("AACApp", native_options, Box::new(|cc| Box::new(App::new(cc)))).expect("Could not start GUI.");
 }
