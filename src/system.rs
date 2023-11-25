@@ -74,7 +74,7 @@ fn test_system() {
     }"#;
 
     let system: System = DeJson::deserialize_json(json).unwrap();
-    assert_eq!(0, system.default_layout());
+    assert_eq!(0, system.default_folder());
     let folder = &system.folders[system.default_folder()];
 
     assert_eq!("Home", folder.name);
