@@ -27,7 +27,7 @@ impl Panel {
         self.entries.iter().map(|e| e.get_pronouncible_text()).collect::<Vec<_>>().join(" ")
     }
 
-    pub fn speak(&mut self, speech_engine: &mut SpeechEngine) -> Result<(), String> {
+    pub fn speak(&mut self, speech_engine: &mut SpeechEngine) -> Result<(), Box<dyn std::error::Error>> {
         speech_engine.speak(self.get_pronouncible_text())?;
         self.clear();
         Ok(())

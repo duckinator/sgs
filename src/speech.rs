@@ -16,13 +16,13 @@ impl Default for SpeechEngine {
 }
 
 impl SpeechEngine {
-    pub fn speak<S: Into<String>>(&mut self, text: S) -> Result<(), String> {
+    pub fn speak<S: Into<String>>(&mut self, text: S) -> Result<(), Box<dyn std::error::Error>> {
         // true = interrupt current speech; false = don't interrupt current speech.
         let interrupt = true;
 
         match self.tts.speak(text, interrupt) {
             Ok(_) => Ok(()),
-            Err(e) => Err(e.to_string())
+            Err(e) => Err(Box::new(e)),
         }
     }
 }
