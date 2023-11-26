@@ -19,11 +19,12 @@ communication methods used in place of or in addition to speech.
 
 ### Terminology
 
+These are the terms and definitions SGS uses for common AAC concepts:
+
 * **button:** a single interactive element, representing a word/phrase OR an action to perform.
 * **folder:** a collection of buttons, with a unique name, plus whether buttons should be spoken immediately or appended.
-* **system:** a group of oflders, plus the name of the default folder.
+* **system:** a group of folders, plus the name of the default folder.
 * **profile:** various metadata + a system that specifies what buttons are different from the base system
-
 
 ### Design Goals
 
