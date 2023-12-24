@@ -12,11 +12,19 @@ pub struct Folder {
     pub buttons: Vec<Option<Button>>,
 }
 
+#[derive(Clone, Debug, Default, DeJson, SerJson, PartialEq)]
+pub struct Hotbar {
+    pub rows: usize,
+    pub cols: usize,
+    pub buttons: Vec<Option<Button>>,
+}
+
 #[derive(Clone, Debug, Default, DeJson, SerJson)]
 pub struct System {
     pub name: String,
     pub description: String,
     pub folders: Vec<Folder>,
+    pub hotbar: Hotbar,
 }
 
 impl Folder {
@@ -70,7 +78,15 @@ fn test_system() {
                     {"label": "Hey!"}
                 ]
             }
-        ]
+        ],
+        "hotbar": {
+            "rows": 2,
+            "cols": 2,
+            "buttons": [
+                {"label": "a"}, {"label": "the"},
+                null, null
+            ]
+        }
     }"#;
 
     let system: System = DeJson::deserialize_json(json).unwrap();
@@ -90,4 +106,9 @@ fn test_system() {
     assert_eq!(false, quick_folder.default);
     assert_eq!(true, quick_folder.immediate);
     assert_eq!("Hey!", quick_folder.buttons[0].as_ref().unwrap().label);
+
+    let hotbar = &system.hotbar;
+    assert_eq!(2, hotbar.rows);
+    assert_eq!(2, hotbar.cols);
+    assert_eq!("a", hotbar.buttons[0].as_ref().unwrap().label);
 }
