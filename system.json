@@ -36,6 +36,8 @@
         }
     ],
     "hotbar": {
+        "rows": 1,
+        "cols": 9,
         "buttons": [
         ]
     }
