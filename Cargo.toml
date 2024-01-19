@@ -21,7 +21,3 @@ categories = ["accessibility"]
 eframe = "0.23.0"
 nanoserde = "0.1.35"
 tts = "0.25.6"
-
-# For the parser.
-pest = "2.7.5"
-pest_derive = "2.7.5"
