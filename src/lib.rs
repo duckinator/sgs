@@ -56,7 +56,8 @@ impl App {
         let speech_engine = SpeechEngine::default();
         let panel = Panel::default();
 
-        let system: System = System::load_file("system.json");
+        //let system: System = System::load_file("system.json");
+        let system: System = System::load_str(include_str!("../system.json"));
         let current_folder = system.default_folder();
 
         Self { speech_engine, panel, system, current_folder }
