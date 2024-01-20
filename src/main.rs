@@ -1,8 +1,13 @@
+pub mod system;
+pub mod button;
+pub mod panel;
+pub mod speech;
+
 use eframe::egui;
 
-use sgs::system::System;
-use sgs::panel::Panel;
-use sgs::speech::SpeechEngine;
+use system::System;
+use panel::Panel;
+use speech::SpeechEngine;
 
 const MIN_WIDTH: f32 = 1280.0;
 const MIN_HEIGHT: f32 = 720.0;
