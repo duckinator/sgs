@@ -21,3 +21,11 @@ categories = ["accessibility"]
 eframe = "0.23.0"
 nanoserde = "0.1.35"
 tts = "0.25.6"
+
+# This dependency will only be included when not targeting Android
+[target.'cfg(not(target_os = "android"))'.dependencies]
+eframe = { version = "0.23.0" }
+
+# This dependency will only be included when targeting Android
+[target.'cfg(target_os = "android")'.dependencies]
+eframe = { version = "0.23.0", features = ["android-native-activity"] }
