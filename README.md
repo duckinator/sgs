@@ -8,6 +8,22 @@ or [TD Snap by tobii dynavox](https://us.tobiidynavox.com/pages/td-snap).
 Proloquo is what I use regularly, and it serves me well. TD Snap is much
 cheaper and far more flexible, but has a steeper learning curve.
 
+## Building for Windows or Linux
+
+Using the normal `cargo build`/`cargo run` process should be fine.
+
+However, you can also use `x build`/`x run` for consistency with the Android build process.
+
+## Building for Android
+
+This assumes a Debian environment, since that's what I've used for it.
+
+- [rust-mobile/xbuild](https://github.com/rust-mobile/xbuild) (not to be confused with 6 other things called "xbuild")
+
+The following Debian packages:
+- adb android-sdk-platform-tools libssl-dev kotlin
+
+
 ---
 
 SGS is open-source **AAC** _(Accessible and Augmentative Communication)_

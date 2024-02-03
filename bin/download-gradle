@@ -1,0 +1,12 @@
+#!/bin/sh
+
+GRADLE_VERSION=8.6
+
+rm -rf ./gradle/ || exit $?
+
+wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" || exit $?
+unzip gradle.zip || exit $?
+
+mv "./gradle-${GRADLE_VERSION}" ./gradle || exit $?
+
+./gradle/bin/gradle --version || exit $?
