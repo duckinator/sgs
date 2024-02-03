@@ -2,11 +2,11 @@
 
 GRADLE_VERSION=8.6
 
-rm -rf ./gradle/ || exit $?
+rm -rf "$HOME/sgs-gradle/" || exit $?
 
 wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" || exit $?
 unzip gradle.zip || exit $?
 
-mv "./gradle-${GRADLE_VERSION}" ./gradle || exit $?
+mv "./gradle-${GRADLE_VERSION}" "$HOME/sgs-gradle" || exit $?
 
-./gradle/bin/gradle --version || exit $?
+"$HOME/sgs-gradle/bin/gradle --version || exit $?

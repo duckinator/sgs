@@ -20,9 +20,35 @@ This assumes a Debian environment, since that's what I've used for it.
 
 - [rust-mobile/xbuild](https://github.com/rust-mobile/xbuild) (not to be confused with 6 other things called "xbuild")
 
-The following Debian packages:
-- adb android-sdk-platform-tools libssl-dev kotlin
+Clone the repo, and `cd` to the project root:
 
+```
+git clone https://github.com/duckinator/sgs.git && cd sgs
+```
+
+Then, install required packages:
+
+```
+sudo apt install adb android-sdk-platform-tools sdkmanager libssl-dev kotlin curl && \
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh && \
+rustup target install aarch64-linux-android && \
+./bin/download-sgs
+```
+
+Add the following to your shell configuration:
+
+```
+export ANDROID_HOME="$HOME/android-sdk"
+export PATH="$PATH:$HOME/sgs-gradle/bin"
+```
+
+Plug in an Android device you want to use for testing, run `x doctor`, and get the device ID.
+
+Then run:
+
+```
+x run --device adb:ID-FROM-X-DOCTOR
+```
 
 ---
 
