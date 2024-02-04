@@ -3,22 +3,24 @@ package rs.tts
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 
-@androidx.annotation.Keep
-class Bridge: UtteranceProgressListener(), TextToSpeech.OnInitListener {
-    public int backendId
+//import androidx.annotation.Keep
 
-    fun Bridge(backendId: int) {
+//@Keep
+abstract class Bridge(backendId: Int): UtteranceProgressListener(), TextToSpeech.OnInitListener {
+    public var backendId: Int
+
+    init {
         this.backendId = backendId
     }
 
-    override fun onInit(status: int)
+    abstract override fun onInit(status: Int)
 
-    override fun onStart(utteranceId: String)
+    abstract override fun onStart(utteranceId: String)
 
-    override fun onStop(utteranceId: String, interrupted: Boolean)
+    abstract override fun onStop(utteranceId: String, interrupted: Boolean)
 
-    override fun onDone(utteranceId: String)
+    abstract override fun onDone(utteranceId: String)
 
-    override fun onError(utteranceId: String)
+    abstract override fun onError(utteranceId: String)
 
 }
