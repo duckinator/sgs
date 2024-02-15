@@ -32,23 +32,43 @@ Then, install required packages:
 sudo apt install adb android-sdk-platform-tools sdkmanager libssl-dev kotlin curl && \
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh && \
 rustup target install aarch64-linux-android && \
-./bin/download-sgs
+./bin/download-gradle
 ```
 
 Add the following to your shell configuration:
 
 ```
 export ANDROID_HOME="$HOME/android-sdk"
+export ANDROID_NDK_VERSION="26.2.11394342"
+export ANDROID_NDK_HOME="${ANDROID_HOME}/ndk/${ANDROID_NDK_VERSION}"
+
 export PATH="$PATH:$HOME/sgs-gradle/bin"
 ```
 
-Plug in an Android device you want to use for testing, run `x doctor`, and get the device ID.
+Open a new shell, or apply that configuration manually.
+
+Then, run `sdkmanager --install "ndk;${ANDROID_NDK_VERSION}"`.
+
+<!-- Plug in an Android device you want to use for testing, run `x doctor`, and get the device ID. -->
+
+<!--
 
 Then run:
 
 ```
 x run --device adb:ID-FROM-X-DOCTOR
 ```
+-->
+
+Then run: (TODO: figure out actual commands)
+
+```
+cargo ndk -t arm64-v8a ??? build --release
+gradle ???
+```
+
+TODO: Figure out how to run on the device.
+
 
 ---
 

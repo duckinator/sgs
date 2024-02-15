@@ -1,3 +1,4 @@
 /target
 /gradle.zip
 /gradle/
+.gradle/
