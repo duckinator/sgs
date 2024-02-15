@@ -63,7 +63,7 @@ x run --device adb:ID-FROM-X-DOCTOR
 Then run: (TODO: figure out actual commands)
 
 ```
-cargo ndk -t arm64-v8a ??? build --release
+cargo ndk -t arm64-v8a build --lib
 gradle ???
 ```
 
