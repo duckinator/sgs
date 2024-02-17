@@ -1,8 +1,6 @@
-package com.example.sgs
+package net.duckinator.sgs
 
 import android.app.NativeActivity
-//import android.os.Bundle
-//import android.view.WindowManager
 
 class MainActivity : NativeActivity() {
     companion object {
@@ -10,8 +8,4 @@ class MainActivity : NativeActivity() {
             System.loadLibrary("sgs")
         }
     }
-
-    /*override protected fun onCreate(savedInstanceState: Bundle) {
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
-    }*/
 }

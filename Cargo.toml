@@ -32,6 +32,9 @@ eframe = { version = "0.23.0" }
 
 # This dependency will only be included when targeting Android
 [target.'cfg(target_os = "android")'.dependencies]
+android_logger = "=0.11.1" # Locked until https://github.com/Nercury/android_logger-rs/issues/58 is fixed
+log = "0.4.17"
+jni = "0.21"
 eframe = { version = "0.23.0", features = ["android-native-activity"] }
 # TODO: Figure out how to not need winit.
 # Until then, pin to the version that egui-winit (as pulled in by eframe) needs.

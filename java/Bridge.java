@@ -3,7 +3,7 @@ package rs.tts;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 
-@androidx.annotation.Keep
+//@androidx.annotation.Keep
 public class Bridge extends UtteranceProgressListener implements TextToSpeech.OnInitListener {
     public int backendId;
 

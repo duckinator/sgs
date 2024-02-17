@@ -3,6 +3,8 @@ pub mod button;
 pub mod panel;
 pub mod speech;
 
+use log;
+
 use eframe::egui;
 use eframe::NativeOptions;
 
@@ -201,7 +203,36 @@ pub fn native_main() {
 #[cfg(target_os = "android")]
 #[no_mangle]
 fn android_main(app: AndroidApp) {
+    use android_logger;
     use winit::platform::android::EventLoopBuilderExtAndroid;
+
+    /*
+    use jni::JavaVM;
+    use jni::sys::JNIInvokeInterface_;
+    let vm = unsafe { JavaVM::from_raw(app.vm_as_ptr() as *mut *const JNIInvokeInterface_) };
+    let vm = vm.expect("Can't get reference to JavaVM");
+
+    let mut env = vm.get_env().expect("Can't get reference to JNIEnv");
+
+    let class_name = "android/speech/tts/TextToSpeech";
+    //let class_name = "java/lang/System";
+    let class = env.find_class(class_name).expect("Failed to find `TextToSpeech`");
+    //let class = env.new_global_ref(class).expect("Failed to create `...` GlobalRef");
+
+    //env.call_static_method(class, "loadLibrary", "(Ljava/lang/String;)V", &[(&env.new_string("sgs").unwrap()).into()]).unwrap();
+    */
+
+    /*
+    TextToSpeech tts = new TextToSpeech(this, this);
+    tts.setLanguage(Locale.US);
+    tts.speak("Text to say aloud", TextToSpeech.QUEUE_ADD, null);
+    */
+
+    android_logger::init_once(
+        android_logger::Config::default()
+            .with_min_level(log::Level::Trace)
+            .with_tag("sgs"),
+    );
 
     let native_options = NativeOptions {
         event_loop_builder: Some(Box::new(move |builder| {

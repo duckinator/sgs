@@ -1,2 +1,4 @@
 android:
   gradle: true
+  manifest:
+    package: "net.duckinator.sgs"
