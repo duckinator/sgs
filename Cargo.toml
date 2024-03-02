@@ -14,10 +14,25 @@ license = "MIT"
 keywords = ["sgs", "aac", "communication"]
 categories = ["accessibility"]
 
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [dependencies]
-eframe = "0.23.0"
+eframe = { version = "0.23.0", default-features = false, features = [
+    "accesskit",     # Make egui comptaible with screen readers. NOTE: adds a lot of dependencies.
+    "default_fonts", # Embed the default egui fonts.
+    "glow",          # Use the glow rendering backend. Alternative: "wgpu".
+    "persistence",   # Enable restoring app state when restarting the app.
+] }
 nanoserde = "0.1.35"
 tts = "0.25.6"
+log = "0.4.21"
+
+
+# web:
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "=0.2.90"
+wasm-bindgen-futures = "0.4"
+web-sys = "0.3"
