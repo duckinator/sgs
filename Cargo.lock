@@ -2122,7 +2122,6 @@ dependencies = [
  "eframe",
  "nanoserde",
  "tts",
- "winit",
 ]
 
 [[package]]
