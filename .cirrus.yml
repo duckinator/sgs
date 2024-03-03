@@ -47,7 +47,7 @@ site_gen_task:
     - cargo build --target wasm32-unknown-unknown
   wasm_bindgen_script:
     - cp -r ./web ./_site
-    - wasm-bindgen --target _site/ --out-dir _site/ target/wasm32-unknown-unknown/debug/sgs.wasm
+    - wasm-bindgen --target web --out-dir _site/ target/wasm32-unknown-unknown/debug/sgs.wasm
   web_artifacts:
     path: "_site/*"
 
