@@ -66,6 +66,6 @@ publish_task:
     # https://github.com/netlify/cli/issues/1870
     - npm install --unsafe-perm=true -g netlify-cli
   script:
-    - wget https://api.cirrus-ci.com/v1/artifact/build/${CIRRUS_BUILD_ID}/site_gen/site/_site.zip
+    - wget https://api.cirrus-ci.com/v1/artifact/build/${CIRRUS_BUILD_ID}/site/_site.zip
     - unzip _site.zip
     - netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir=_site --prod
