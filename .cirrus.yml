@@ -59,7 +59,7 @@ publish_task:
     image: node:20-bookworm
   env:
     NETLIFY_AUTH_TOKEN: ENCRYPTED[022956827617e8b2cf518ed37953f6028a49c0928ff43ccfe6edbcffe907c707b5c8209a2a25030854b324c27c99199d]
-    NETLIFY_SITE_ID: ENCRYPTED[53dffd809e288262dca368b4ea2736ab1577ffbdd26c16dcb56a97162587d980cd7eae2b9deafa5fcf698757ae851a39]
+    NETLIFY_SITE_ID: ENCRYPTED[1b67d4169a6bb34256b7409a0843b04d847d6397f45127da970bd7afc077f83a1e7765e1251a316cc9c9bc9d2cff78a0]
   install_script:
     - apt-get -y update
     - apt-get -y install python3 python3-lxml wget unzip
