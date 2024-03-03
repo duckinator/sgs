@@ -1,0 +1,41 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json">
+<script type="module">
+    import * as sgs from './sgs.js';
+    window.sgs = sgs;
+
+    sgs.default().then(_ => {
+        let wh = new sgs.WebHandle();
+
+        let interval = setInterval(_ => {
+            if (wh.has_panicked()) {
+                clearInterval(interval);
+                console.log(wh.panic_message());
+                document.getElementById("panic-msg").innerText = wh.panic_message();
+                document.getElementById("panic-callstack").innerText = wh.panic_callstack();
+                document.getElementById("canvas").display = "none";
+            }
+        }, 1000);
+
+        wh.start("canvas", window.innerWidth, window.innerHeight);
+    });
+</script>
+<style>
+html, body {
+    height: 100%;
+    width: 100%;
+}
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+</style>
+<canvas id="canvas"></canvas>
+<div id="error">
+    <div id="panic-msg"></div>
+    <pre id="panic-callstack"></pre>
+</div>

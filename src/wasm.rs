@@ -2,6 +2,7 @@
 
 use crate::app::App;
 
+use eframe::egui;
 use log;
 use wasm_bindgen::{self, prelude::*};
 
@@ -28,11 +29,16 @@ impl WebHandle {
 
     /// Call this once from JavaScript to start your app.
     #[wasm_bindgen]
-    pub async fn start(&self, canvas_id: &str) -> Result<(), wasm_bindgen::JsValue> {
+    pub async fn start(&self, canvas_id: &str, max_width: f32, max_height: f32) -> Result<(), wasm_bindgen::JsValue> {
+        let web_options = eframe::WebOptions {
+            max_size_points: egui::vec2(max_width, max_height),
+            ..Default::default()
+        };
+
         self.runner
             .start(
                 canvas_id,
-                eframe::WebOptions::default(),
+                web_options,
                 Box::new(|cc| Box::new(App::new(cc))),
             )
             .await

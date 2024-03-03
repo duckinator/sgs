@@ -13,6 +13,9 @@ use sgs::app::{
     App,
 };
 
+#[cfg(target_arch = "wasm32")]
+use sgs::WebHandle;
+
 // See https://github.com/rust-lang/rust/issues/103336
 #[cfg(target_arch = "wasm32")]
 fn main() { }
