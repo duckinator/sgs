@@ -2,3 +2,4 @@
 /web/*.wasm
 /web/*.js
 /web/*.ts
+!/web/fetch-worker.js
