@@ -34,3 +34,38 @@ success_task:
   depends_on:
     - Lint
     - Linux tests
+
+
+site_gen_task:
+  container:
+    image: rust:1.76-bookworm
+  rustup_target_script:
+    - rustup target add wasm32-unknown-unknown
+  cargo_install_script:
+    - cargo install wasm-bindgen-cli
+  cargo_build_script:
+    - cargo build --target wasm32-unknown-unknown
+  wasm_bindgen_script:
+    - cp -r ./web ./_site
+    - wasm-bindgen --target _site/ --out-dir _site/ target/wasm32-unknown-unknown/debug/sgs.wasm
+  web_artifacts:
+    path: "_site/*"
+
+publish_task:
+  only_if: $BRANCH == 'main'
+  depends_on:
+    - site_gen
+  container:
+    image: node:20-bookworm
+  env:
+    NETLIFY_AUTH_TOKEN: ENCRYPTED[022956827617e8b2cf518ed37953f6028a49c0928ff43ccfe6edbcffe907c707b5c8209a2a25030854b324c27c99199d]
+    NETLIFY_SITE_ID: ENCRYPTED[53dffd809e288262dca368b4ea2736ab1577ffbdd26c16dcb56a97162587d980cd7eae2b9deafa5fcf698757ae851a39]
+  install_script:
+    - apt-get -y update
+    - apt-get -y install python3 python3-lxml wget unzip
+    # https://github.com/netlify/cli/issues/1870
+    - npm install --unsafe-perm=true -g netlify-cli
+  script:
+    - wget https://api.cirrus-ci.com/v1/artifact/build/${CIRRUS_BUILD_ID}/site_gen/_site.zip
+    - unzip _site.zip
+    - netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir=_site --prod
