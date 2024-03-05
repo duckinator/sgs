@@ -42,7 +42,7 @@ site_gen_task:
   rustup_target_script:
     - rustup target add wasm32-unknown-unknown
   cargo_install_script:
-    - cargo install wasm-bindgen-cli@0.29.0
+    - cargo install wasm-bindgen-cli@0.2.90
   cargo_build_script:
     - cargo build --target wasm32-unknown-unknown
   wasm_bindgen_script:
