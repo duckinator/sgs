@@ -37,6 +37,8 @@ success_task:
 
 
 site_gen_task:
+  depends_on:
+    - CI success
   container:
     image: rust:1.76-bookworm
   rustup_target_script:
