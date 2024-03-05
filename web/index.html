@@ -14,8 +14,19 @@
             if (wh.has_panicked()) {
                 clearInterval(interval);
                 console.log(wh.panic_message());
-                document.getElementById("panic-msg").innerText = wh.panic_message();
-                document.getElementById("panic-callstack").innerText = wh.panic_callstack();
+                var div = document.createElement("div");
+
+                var p = document.createElement("p");
+                p.innerText = wh.panic_message();
+
+                var pre = document.createElement("pre");
+                pre.innerText = wh.panic_callstack();
+
+                div.appendChild(p);
+                div.appendChild(pre);
+
+                document.body.appendChild(div);
+
                 document.getElementById("canvas").display = "none";
             }
         }, 1000);
@@ -27,6 +38,7 @@
 html, body {
     height: 100%;
     width: 100%;
+    margin: 0;
 }
 canvas {
     position: absolute;
@@ -37,7 +49,3 @@ canvas {
 }
 </style>
 <canvas id="canvas"></canvas>
-<div id="error">
-    <div id="panic-msg"></div>
-    <pre id="panic-callstack"></pre>
-</div>
