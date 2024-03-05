@@ -7,14 +7,6 @@
     import * as sgs from './sgs.js';
     window.sgs = sgs;
 
-    // Safari-specfic kludge.
-    if ('speechSynthesis' in window) {
-        // Clear any outstanding speechSynthesis events.
-        window.speechSynthesis.cancel();
-        // Safari loads voices synchronously, apparently?
-        window.speechSynthesis.getVoices();
-    }
-
     sgs.default().then(_ => {
         let wh = new sgs.WebHandle();
 
