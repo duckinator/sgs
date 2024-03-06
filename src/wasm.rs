@@ -20,7 +20,7 @@ impl WebHandle {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
         // Redirect [`log`] message to `console.log` and friends:
-        eframe::WebLogger::init(log::LevelFilter::Debug).ok();
+        eframe::WebLogger::init(log::LevelFilter::Trace).ok();
 
         Self {
             runner: eframe::WebRunner::new(),

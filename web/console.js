@@ -31,6 +31,7 @@ if (location.search == "?debug") {
             info: text => cfn("info", text),
             warn: text => cfn("warn", text),
             error: text => cfn("error", text),
+            trace: text => cfn("trace", text),
         };
     })(window.console);
     window.console = console;
