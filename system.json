@@ -4,7 +4,6 @@
     "folders": [
         {
             "name": "Home",
-            "default": true,
             "immediate": false,
             "rows": 6,
             "cols": 9,
@@ -23,7 +22,6 @@
 
         {
             "name": "Quick Reply",
-            "default": false,
             "immediate": true,
             "rows": 4,
             "cols": 6,

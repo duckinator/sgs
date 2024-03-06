@@ -5,7 +5,6 @@ use nanoserde::{DeJson, DeJsonErr, SerJson};
 #[derive(Clone, Debug, Default, DeJson, SerJson, PartialEq)]
 pub struct Folder {
     pub name: String,
-    pub default: bool,
     pub immediate: bool,
     pub rows: usize,
     pub cols: usize,
@@ -47,10 +46,6 @@ impl System {
     pub fn load_str(json: &str) -> Result<System, DeJsonErr> {
         DeJson::deserialize_json(json)
     }
-
-    pub fn default_folder(&self) -> usize {
-        self.folders.iter().position(|folder| folder.default).expect("No default Folder defined.")
-    }
 }
 
 #[test]
@@ -61,7 +56,6 @@ fn test_system() {
         "folders": [
             {
                 "name": "Home",
-                "default": true,
                 "immediate": false,
                 "rows": 4,
                 "cols": 6,
@@ -74,7 +68,6 @@ fn test_system() {
             },
             {
                 "name": "Quick Response",
-                "default": false,
                 "immediate": true,
                 "rows": 1,
                 "cols": 1,
@@ -94,8 +87,7 @@ fn test_system() {
     }"#;
 
     let system: System = DeJson::deserialize_json(json).unwrap();
-    assert_eq!(0, system.default_folder());
-    let folder = &system.folders[system.default_folder()];
+    let folder = &system.folders[0];
 
     assert_eq!("Home", folder.name);
     assert_eq!(true, folder.default);

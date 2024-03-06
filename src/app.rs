@@ -48,7 +48,7 @@ impl App {
 
         //let system: System = System::load_file("system.json");
         let system: System = System::load_str(include_str!("../system.json")).expect("Failed to load System from bundled system.json");
-        let current_folder = system.default_folder();
+        let current_folder = 0;
 
         Self { speech_engine, panel, system, current_folder }
     }
