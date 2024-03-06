@@ -73,9 +73,7 @@ impl eframe::App for App {
                 egui::Grid::new("top-left").show(ui, |ui| {
                     let egui_button = egui::Button::new("Speak");
                     if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
-                        if let Err(error) = self.panel.speak(&mut self.speech_engine) {
-                            panic!("{:?}", error);
-                        }
+                        self.panel.speak(&mut self.speech_engine).unwrap();
                     }
                 });
 
