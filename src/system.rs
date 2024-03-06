@@ -37,10 +37,9 @@ impl Folder {
 }
 
 impl System {
-    pub fn load_file(path: &str) -> Self {
-        std::fs::read_to_string(path).map(|contents|
-            Self::load_str(&contents).unwrap()
-        ).unwrap()
+    pub fn load_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
+        let contents = std::fs::read_to_string(path)?;
+        Ok(Self::load_str(&contents)?)
     }
 
     pub fn load_str(json: &str) -> Result<System, DeJsonErr> {

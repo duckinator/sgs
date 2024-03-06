@@ -46,7 +46,7 @@ impl App {
         let speech_engine = SpeechEngine::default().expect("Failed to initialize text-to-speech system");
         let panel = Panel::default();
 
-        //let system: System = System::load_file("system.json");
+        //let system: System = System::load_file("system.json").expect("Failed to load System from ./system.json");
         let system: System = System::load_str(include_str!("../system.json")).expect("Failed to load System from bundled system.json");
         let current_folder = 0;
 
