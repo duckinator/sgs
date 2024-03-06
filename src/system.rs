@@ -29,19 +29,11 @@ pub struct System {
 
 impl Folder {
     pub fn get_button(&self, col: usize, row: usize) -> Option<&Button> {
-        if col >= self.cols {
-            panic!("get_button() called with col={}, but only columns 0-{} are available", col, self.cols - 1);
+        if let Some(btn) = self.buttons.get(row * self.cols + col) {
+            return btn.as_ref();
+        } else {
+            return None;
         }
-
-        if row >= self.rows {
-            panic!("get_button() called with row={}, but only rows 0-{} are available", row, self.rows - 1);
-        }
-
-        if self.buttons.len() <= row * self.cols + col {
-            panic!("get_button() expected too many items to exist -- are \"rows\" and \"cols\" set right in the \"{}\" folder?", self.name);
-        }
-
-        self.buttons[row * self.cols + col].as_ref()
     }
 }
 
