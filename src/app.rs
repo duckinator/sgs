@@ -7,12 +7,10 @@ use crate::speech::SpeechEngine;
 pub const MIN_WIDTH: f32 = 1280.0;
 pub const MIN_HEIGHT: f32 = 720.0;
 
-pub const COLS: f32 = 12.0;
-pub const ROWS: f32 = 8.0;
-
 pub const ITEM_SPACING: f32 = 5.0;
 pub const MARGIN: f32 = 10.0;
 
+// COLS = 12
 // ((BUTTON_WIDTH + ITEM_SPACING) * COLS) + (MARGIN * 2) - ITEM_SPACING
 // ((100 + 5) * 12) + (10 * 2) - 5
 // (105 * 12) + 20 - 5
@@ -21,6 +19,7 @@ pub const MARGIN: f32 = 10.0;
 // =>
 // 1275
 pub const BUTTON_WIDTH: f32 = 100.0;
+// ROWS = 8
 // ((BUTTON_HEIGHT + ITEM_SPACING) * ROWS) + (MARGIN * 2) - ITEM_SPACING
 // ((83 + 5) * 8) + (10 * 2) - 5
 // (88 * 8) + 20 - 5
