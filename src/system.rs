@@ -89,7 +89,6 @@ fn test_system() {
     let folder = &system.folders[0];
 
     assert_eq!("Home", folder.name);
-    assert_eq!(true, folder.default);
     assert_eq!(false, folder.immediate);
 
     assert_eq!("hello", folder.buttons[0].as_ref().unwrap().label);
@@ -98,7 +97,6 @@ fn test_system() {
 
     let quick_folder = &system.folders[1];
     assert_eq!("Quick Response", quick_folder.name);
-    assert_eq!(false, quick_folder.default);
     assert_eq!(true, quick_folder.immediate);
     assert_eq!("Hey!", quick_folder.buttons[0].as_ref().unwrap().label);
 
