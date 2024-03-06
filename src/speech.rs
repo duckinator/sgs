@@ -16,7 +16,7 @@ impl SpeechEngine {
 
     pub fn speak<S: Into<String>>(&mut self, text: S) -> Result<(), Box<dyn std::error::Error>> {
         // true = interrupt current speech; false = don't interrupt current speech.
-        let interrupt = true;
+        let interrupt = false;
 
         self.tts.speak(text, interrupt)?;
         Ok(())
