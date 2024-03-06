@@ -43,7 +43,7 @@ impl App {
         // Restore app state using cc.storage (requires the "persistence" feature).
         // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
         // for e.g. egui::PaintCallback.
-        let speech_engine = SpeechEngine::default();
+        let speech_engine = SpeechEngine::default().expect("Failed to initialize text-to-speech system");
         let panel = Panel::default();
 
         //let system: System = System::load_file("system.json");
