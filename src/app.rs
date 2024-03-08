@@ -1,4 +1,6 @@
+use log::{info, trace, warn};
 use eframe::egui;
+use eframe::egui::Pos2;
 
 use crate::system::System;
 use crate::panel::Panel;
@@ -7,28 +9,33 @@ use crate::speech::SpeechEngine;
 pub const MIN_WIDTH: f32 = 1280.0;
 pub const MIN_HEIGHT: f32 = 720.0;
 
-pub const ITEM_SPACING: f32 = 5.0;
-pub const MARGIN: f32 = 10.0;
+#[derive(Debug)]
+struct Dimensions {
+    item_spacing: f32,
+    margin: f32,
+    width: f32,
+    height: f32,
+    button_size: [f32; 2],
+    rows: usize,
+    cols: usize,
+}
 
-// COLS = 12
-// ((BUTTON_WIDTH + ITEM_SPACING) * COLS) + (MARGIN * 2) - ITEM_SPACING
-// ((100 + 5) * 12) + (10 * 2) - 5
-// (105 * 12) + 20 - 5
-// 1260 + 20 - 5
-// 1280 - 5
-// =>
-// 1275
-pub const BUTTON_WIDTH: f32 = 100.0;
-// ROWS = 8
-// ((BUTTON_HEIGHT + ITEM_SPACING) * ROWS) + (MARGIN * 2) - ITEM_SPACING
-// ((83 + 5) * 8) + (10 * 2) - 5
-// (88 * 8) + 20 - 5
-// 704 + 20 - 5
-// 724 - 5
-// =>
-// 719
-pub const BUTTON_HEIGHT: f32 = 83.0;
-const BUTTON_SIZE: [f32; 2] = [BUTTON_WIDTH, BUTTON_HEIGHT];
+impl Dimensions {
+    pub fn new(screen_size: Pos2, rows: usize, cols: usize) -> Self {
+        let width = screen_size.x;
+        let height = screen_size.y;
+
+        let item_spacing = 5.0;
+        let margin = 10.0;
+
+        let button_width = ((width - margin - item_spacing) / ((cols as f32) + 3.0)) - item_spacing;
+        let button_height = ((height - margin - item_spacing) / ((rows as f32) + 2.0)) - item_spacing;
+
+        let button_size = [button_width, button_height];
+
+        Self { item_spacing, margin, width, height, button_size, rows, cols }
+    }
+}
 
 pub struct App {
     speech_engine: SpeechEngine,
@@ -56,9 +63,14 @@ impl App {
 
 impl eframe::App for App {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        let inner_margin = egui::style::Margin::same(MARGIN);
+        let screen_size = ctx.input(|i| i.screen_rect().max);
+        let folder = &self.system.folders[self.current_folder];
+        let dimensions = Dimensions::new(screen_size, folder.rows, folder.cols);
+        info!("{:?}", dimensions);
+
+        let inner_margin = egui::style::Margin::same(dimensions.margin);
         ctx.style_mut(|style| {
-            style.spacing.item_spacing = egui::vec2(ITEM_SPACING, ITEM_SPACING);
+            style.spacing.item_spacing = egui::vec2(dimensions.item_spacing, dimensions.item_spacing);
         });
         let frame = egui::containers::Frame::central_panel(&ctx.style()).inner_margin(inner_margin);
 
@@ -72,7 +84,7 @@ impl eframe::App for App {
                 // Row 1, Column 1
                 egui::Grid::new("top-left").show(ui, |ui| {
                     let egui_button = egui::Button::new("Speak");
-                    if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
+                    if ui.add_sized(dimensions.button_size, egui_button).clicked() {
                         self.panel.speak(&mut self.speech_engine).unwrap();
                     }
                 });
@@ -81,7 +93,7 @@ impl eframe::App for App {
                 egui::Grid::new("top-center").show(ui, |ui| {
                     let cols = self.system.folders[self.current_folder].cols;
                     let inner_spacing = ui.ctx().style().spacing.item_spacing[0];
-                    let max_width = (cols as f32) * (BUTTON_SIZE[0] + inner_spacing);
+                    let max_width = (cols as f32) * (dimensions.button_size[0] + inner_spacing);
 
                     ui.with_layout(egui::Layout::left_to_right(egui::Align::TOP).with_main_wrap(true), |ui| {
                         ui.set_max_width(max_width);
@@ -96,7 +108,7 @@ impl eframe::App for App {
                             if self.panel.entries.len() > cols {
                                 let _ = ui.add(egui_button);
                             } else {
-                                let _ = ui.add_sized(BUTTON_SIZE, egui_button);
+                                let _ = ui.add_sized(dimensions.button_size, egui_button);
                             };
                         }
                     });
@@ -105,12 +117,12 @@ impl eframe::App for App {
                 // Row 1, Column 3
                 egui::Grid::new("top-right").show(ui, |ui| {
                     let egui_button = egui::Button::new("Delete");
-                    if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
+                    if ui.add_sized(dimensions.button_size, egui_button).clicked() {
                         self.panel.remove_last_entry();
                     }
 
                     let egui_button = egui::Button::new("Clear");
-                    if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
+                    if ui.add_sized(dimensions.button_size, egui_button).clicked() {
                         self.panel.clear();
                     }
                 });
@@ -121,7 +133,7 @@ impl eframe::App for App {
                 egui::Grid::new("folder-selector-grid").show(ui, |ui| {
                     for (idx, folder) in self.system.folders.iter().enumerate() {
                         let egui_button = egui::Button::new(folder.name.clone()).selected(self.current_folder == idx);
-                        if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
+                        if ui.add_sized(dimensions.button_size, egui_button).clicked() {
                             self.current_folder = idx;
                         }
                         ui.end_row();
@@ -135,7 +147,7 @@ impl eframe::App for App {
                         for col in 0..folder.cols {
                             if let Some(button) = folder.get_button(col, row) {
                                 let egui_button = egui::Button::new(button.label.clone());
-                                if ui.add_sized(BUTTON_SIZE, egui_button).clicked() {
+                                if ui.add_sized(dimensions.button_size, egui_button).clicked() {
                                     if folder.immediate {
                                         self.speech_engine.speak(button.get_pronouncible_text()).expect("Failed to speak word");
                                     } else {
@@ -146,7 +158,7 @@ impl eframe::App for App {
                                 // No button for (row, col).
                                 //let egui_label = egui::Label::new("");
                                 let egui_label = egui::Button::new("");
-                                ui.add_sized(BUTTON_SIZE, egui_label);
+                                ui.add_sized(dimensions.button_size, egui_label);
                             }
                         }
                         ui.end_row();
