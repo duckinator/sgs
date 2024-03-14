@@ -28,12 +28,6 @@ impl Panel {
     }
 
     pub fn speak(&mut self, speech_engine: &mut SpeechEngine) -> Result<(), Box<dyn std::error::Error>> {
-        if self.entries.len() == 0 {
-            // If there's no text, do nothing.
-            // speech_engine.speak() throws an error when given an empty string.
-            return Ok(())
-        }
-
         speech_engine.speak(self.get_pronouncible_text())?;
         self.clear();
         Ok(())

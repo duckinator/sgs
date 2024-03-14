@@ -1,4 +1,5 @@
 use tts::Tts;
+use std::ops::Deref;
 
 // TODO: Integrate macOS stuff, if I ever get a Mac to test it on. https://github.com/ndarilek/tts-rs/blob/master/examples/hello_world.rs
 
@@ -14,7 +15,11 @@ impl SpeechEngine {
     }
 
 
-    pub fn speak<S: Into<String>>(&mut self, text: S) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn speak<S: Into<String> + Deref<Target=str>>(&mut self, text: S) -> Result<(), Box<dyn std::error::Error>> {
+        if text.len() == 0 {
+            return Ok(());
+        }
+
         // true = interrupt current speech; false = don't interrupt current speech.
         let interrupt = false;
 
