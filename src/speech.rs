@@ -32,11 +32,7 @@ impl SpeechEngine {
     }
 
     pub fn is_speaking(&mut self) -> bool {
-        if let Ok(result) = self.tts.is_speaking() {
-            result
-        } else {
-            // Questionable life choice: Assume not speaking on error.
-            false
-        }
+        // Questionable life choice: Assume not speaking if there's an error.
+        self.tts.is_speaking().unwrap_or(false)
     }
 }
