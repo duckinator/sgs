@@ -26,4 +26,17 @@ impl SpeechEngine {
         self.tts.speak(text, interrupt)?;
         Ok(())
     }
+
+    pub fn stop(&mut self) {
+        let _ = self.tts.stop();
+    }
+
+    pub fn is_speaking(&mut self) -> bool {
+        if let Ok(result) = self.tts.is_speaking() {
+            result
+        } else {
+            // Questionable life choice: Assume not speaking on error.
+            false
+        }
+    }
 }

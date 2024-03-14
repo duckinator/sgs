@@ -83,10 +83,17 @@ impl eframe::App for App {
 
                 // Row 1, Column 1
                 egui::Grid::new("top-left").show(ui, |ui| {
-                    let egui_button = egui::Button::new("Speak");
-                    if ui.add_sized(dimensions.button_size, egui_button).clicked() {
-                        self.speech_engine.speak(self.panel.get_pronouncible_text()).unwrap();
-                        self.panel.clear();
+                    if self.speech_engine.is_speaking() {
+                        let egui_button = egui::Button::new("Stop");
+                        if ui.add_sized(dimensions.button_size, egui_button).clicked() {
+                            self.speech_engine.stop();
+                        }
+                    } else {
+                        let egui_button = egui::Button::new("Speak");
+                        if ui.add_sized(dimensions.button_size, egui_button).clicked() {
+                            self.speech_engine.speak(self.panel.get_pronouncible_text()).unwrap();
+                            self.panel.clear();
+                        }
                     }
                 });
 
