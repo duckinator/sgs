@@ -1,5 +1,4 @@
 use crate::button::Button;
-use crate::speech::SpeechEngine;
 
 #[derive(Default)]
 pub struct Panel {
@@ -25,12 +24,6 @@ impl Panel {
 
     pub fn get_pronouncible_text(&self) -> String {
         self.entries.iter().map(|e| e.get_pronouncible_text()).collect::<Vec<_>>().join(" ")
-    }
-
-    pub fn speak(&mut self, speech_engine: &mut SpeechEngine) -> Result<(), Box<dyn std::error::Error>> {
-        speech_engine.speak(self.get_pronouncible_text())?;
-        self.clear();
-        Ok(())
     }
 }
 
