@@ -2,6 +2,8 @@ use crate::button::Button;
 
 use nanoserde::{DeJson, DeJsonErr, SerJson};
 
+use std::collections::hash_map::HashMap;
+
 #[derive(Clone, Debug, Default, DeJson, SerJson, PartialEq)]
 pub struct Folder {
     pub name: String,
@@ -24,6 +26,8 @@ pub struct System {
     pub description: String,
     pub folders: Vec<Folder>,
     pub hotbar: Hotbar,
+    pub variants: HashMap<String, Vec<String>>,
+    pub related: HashMap<String, Vec<String>>,
 }
 
 impl Folder {

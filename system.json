@@ -38,5 +38,12 @@
         "cols": 9,
         "buttons": [
         ]
+    },
+    "variants": {
+        "hey": ["Hey!"]
+    },
+    "related": {
+        "hello": ["hi", "hey"],
+        "world": ["planet"]
     }
 }
