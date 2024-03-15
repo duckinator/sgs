@@ -146,7 +146,6 @@ impl eframe::App for App {
 
                 // Row 2, Column 2
                 egui::Grid::new("active-folder").show(ui, |ui| {
-                    let folder = &self.system.folders[self.current_folder];
                     for row in 0..folder.rows {
                         for col in 0..folder.cols {
                             if let Some(button) = folder.get_button(col, row) {
