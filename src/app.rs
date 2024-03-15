@@ -173,7 +173,7 @@ impl eframe::App for App {
                     }
                 });
 
-                // Row 3, Column 3
+                // Row 2, Column 3
                 egui::Grid::new("bottom-right").show(ui, |ui| {
                     // ...
                 });
