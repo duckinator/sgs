@@ -11,6 +11,12 @@ pub struct Button {
 }
 
 impl Button {
+    pub fn new(label: String, pronunciation: Option<String>, image: Option<String>) -> Self {
+        let related = None;
+        let variant = None;
+        Self { label, pronunciation, image, related, variant }
+    }
+
     pub fn get_related_word_label(&self, system: &System) -> String {
         if let Some(related) = self.related {
             if let Some(relateds) = system.related.get(&self.label) {

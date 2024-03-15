@@ -92,10 +92,10 @@ impl Panel {
 
 #[test]
 fn test_panel() {
-    let foo = Button { label: "foo".to_string(), pronunciation: None, image: None };
-    let bar = Button { label: "bar".to_string(), pronunciation: None, image: None };
-    let baz = Button { label: "baz".to_string(), pronunciation: None, image: None };
-    let exc = Button { label: "!".to_string(), pronunciation: None, image: None };
+    let foo = Button::new("foo".to_string(), None, None);
+    let bar = Button::new("bar".to_string(), None, None);
+    let baz = Button::new("baz".to_string(), None, None);
+    let exc = Button::new("!".to_string(), None, None);
 
     let mut panel = Panel::default();
 
