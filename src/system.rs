@@ -86,6 +86,27 @@ fn test_system() {
                 {"label": "a"}, {"label": "the"},
                 null, null
             ]
+        },
+        "variants": {
+            "hello": [
+                {"label": "hello"},
+                {"label": "Hello!"}
+            ],
+            "hey": [
+                {"label": "hey"},
+                {"label": "Hey!"}
+            ]
+        },
+        "related": {
+            "hello": [
+                {"label": "hello"},
+                {"label": "hi"},
+                {"label": "hey"}
+            ],
+            "world": [
+                {"label": "world"},
+                {"label": "planet"}
+            ]
         }
     }"#;
 
@@ -108,4 +129,7 @@ fn test_system() {
     assert_eq!(2, hotbar.rows);
     assert_eq!(2, hotbar.cols);
     assert_eq!("a", hotbar.buttons[0].as_ref().unwrap().label);
+
+    assert_eq!("Hello!", &system.variants["hello"][1].label);
+    assert_eq!("hey", &system.related["hello"][2].label);
 }
