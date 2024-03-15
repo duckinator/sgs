@@ -194,10 +194,10 @@ impl eframe::App for App {
                 // Row 2, Column 4
                 egui::Grid::new("variant-words").show(ui, |ui| {
                     if let Some(last_word) = self.panel.last_entry_related_label(&self.system) {
-                        info!("  last_word = {:?}", last_word);
+                        //info!("  last_word = {:?}", last_word);
                         //info!("  system.variants = {:?}", self.system.variants);
                         if let Some(variants) = self.system.variants.get(&last_word) {
-                            info!("    variants = {:?}", variants);
+                            //info!("    variants = {:?}", variants);
                             for row in 0..cmp::min(folder.rows, variants.len()) {
                                 let variant = row;
 
