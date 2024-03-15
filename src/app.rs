@@ -6,6 +6,8 @@ use crate::system::System;
 use crate::panel::Panel;
 use crate::speech::SpeechEngine;
 
+use std::cmp;
+
 pub const MIN_WIDTH: f32 = 1280.0;
 pub const MIN_HEIGHT: f32 = 720.0;
 
@@ -62,7 +64,6 @@ impl eframe::App for App {
         let screen_size = ctx.input(|i| i.screen_rect().max);
         let folder = &self.system.folders[self.current_folder];
         let dimensions = Dimensions::new(screen_size, folder.rows, folder.cols);
-        info!("{:?}", dimensions);
 
         let inner_margin = egui::style::Margin::same(dimensions.margin);
         ctx.style_mut(|style| {
@@ -87,7 +88,7 @@ impl eframe::App for App {
                     } else {
                         let egui_button = egui::Button::new("Speak");
                         if ui.add_sized(dimensions.button_size, egui_button).clicked() {
-                            self.speech_engine.speak(self.panel.get_pronouncible_text()).unwrap();
+                            self.speech_engine.speak(self.panel.get_pronouncible_text(&self.system)).unwrap();
                             self.panel.clear();
                         }
                     }
@@ -108,7 +109,7 @@ impl eframe::App for App {
                             //
                             // For now, assign it to nothing.
                             // Long term, probably use a label with a background.
-                            let egui_button = egui::Button::new(entry.label.clone());
+                            let egui_button = egui::Button::new(entry.get_label(&self.system).clone());
                             if self.panel.entries.len() > cols {
                                 let _ = ui.add(egui_button);
                             } else {
@@ -119,12 +120,14 @@ impl eframe::App for App {
                 });
 
                 // Row 1, Column 3
-                egui::Grid::new("top-right").show(ui, |ui| {
+                egui::Grid::new("delete-btn").show(ui, |ui| {
                     let egui_button = egui::Button::new("Delete");
                     if ui.add_sized(dimensions.button_size, egui_button).clicked() {
                         self.panel.remove_last_entry();
                     }
+                });
 
+                egui::Grid::new("clear-btn").show(ui, |ui| {
                     let egui_button = egui::Button::new("Clear");
                     if ui.add_sized(dimensions.button_size, egui_button).clicked() {
                         self.panel.clear();
@@ -152,7 +155,7 @@ impl eframe::App for App {
                                 let egui_button = egui::Button::new(button.label.clone());
                                 if ui.add_sized(dimensions.button_size, egui_button).clicked() {
                                     if folder.immediate {
-                                        self.speech_engine.speak(button.get_pronouncible_text()).expect("Failed to speak word");
+                                        self.speech_engine.speak(button.get_pronouncible_text(&self.system)).expect("Failed to speak word");
                                     } else {
                                         self.panel.add_entry(button);
                                     }
@@ -169,8 +172,44 @@ impl eframe::App for App {
                 });
 
                 // Row 2, Column 3
-                egui::Grid::new("bottom-right").show(ui, |ui| {
-                    // ...
+                egui::Grid::new("related-words").show(ui, |ui| {
+                    if let Some(last_word) = self.panel.last_entry_label() {
+                        if let Some(related) = self.system.related.get(&last_word) {
+                            //info!("related[{:?}] = {:?}", last_word, related);
+                            for row in 0..cmp::min(folder.rows, related.len()) {
+                                let related_idx = row;
+
+                                let button = &related[row];
+                                let egui_button = egui::Button::new(button.get_label(&self.system).clone());
+                                if ui.add_sized(dimensions.button_size, egui_button).clicked() {
+                                    self.panel.set_last_entry_related(related_idx);
+                                    self.panel.clear_last_entry_variant();
+                                }
+                                ui.end_row();
+                            }
+                        }
+                    }
+                });
+
+                // Row 2, Column 4
+                egui::Grid::new("variant-words").show(ui, |ui| {
+                    if let Some(last_word) = self.panel.last_entry_related_label(&self.system) {
+                        info!("  last_word = {:?}", last_word);
+                        //info!("  system.variants = {:?}", self.system.variants);
+                        if let Some(variants) = self.system.variants.get(&last_word) {
+                            info!("    variants = {:?}", variants);
+                            for row in 0..cmp::min(folder.rows, variants.len()) {
+                                let variant = row;
+
+                                let button = &variants[variant];
+                                let egui_button = egui::Button::new(button.get_label(&self.system).clone());
+                                if ui.add_sized(dimensions.button_size, egui_button).clicked() {
+                                    self.panel.set_last_entry_variant(variant);
+                                }
+                                ui.end_row();
+                            }
+                        }
+                    }
                 });
             });
         });
