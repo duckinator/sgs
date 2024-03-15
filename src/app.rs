@@ -53,6 +53,8 @@ impl App {
 
         //let system: System = System::load_file("system.json").expect("Failed to load System from ./system.json");
         let system: System = System::load_str(include_str!("../system.json")).expect("Failed to load System from bundled system.json");
+        info!("Loaded System configuration.");
+
         let current_folder = 0;
 
         Self { speech_engine, panel, system, current_folder }
@@ -175,7 +177,6 @@ impl eframe::App for App {
                 egui::Grid::new("related-words").show(ui, |ui| {
                     if let Some(last_word) = self.panel.last_entry_label() {
                         if let Some(related) = self.system.related.get(&last_word) {
-                            //info!("related[{:?}] = {:?}", last_word, related);
                             for row in 0..cmp::min(folder.rows, related.len()) {
                                 let related_idx = row;
 
@@ -194,10 +195,7 @@ impl eframe::App for App {
                 // Row 2, Column 4
                 egui::Grid::new("variant-words").show(ui, |ui| {
                     if let Some(last_word) = self.panel.last_entry_related_label(&self.system) {
-                        //info!("  last_word = {:?}", last_word);
-                        //info!("  system.variants = {:?}", self.system.variants);
                         if let Some(variants) = self.system.variants.get(&last_word) {
-                            //info!("    variants = {:?}", variants);
                             for row in 0..cmp::min(folder.rows, variants.len()) {
                                 let variant = row;
 
