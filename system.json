@@ -40,10 +40,17 @@
         ]
     },
     "variants": {
-        "hey": ["Hey!"]
+        "hey": [
+            {"label": "Hey!"}
+        ]
     },
     "related": {
-        "hello": ["hi", "hey"],
-        "world": ["planet"]
+        "hello": [
+            {"label": "hi"},
+            {"label": "hey"}
+        ],
+        "world": [
+            {"label": "planet"}
+        ]
     }
 }

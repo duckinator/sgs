@@ -26,8 +26,8 @@ pub struct System {
     pub description: String,
     pub folders: Vec<Folder>,
     pub hotbar: Hotbar,
-    pub variants: HashMap<String, Vec<String>>,
-    pub related: HashMap<String, Vec<String>>,
+    pub variants: HashMap<String, Vec<Button>>,
+    pub related: HashMap<String, Vec<Button>>,
 }
 
 impl Folder {
