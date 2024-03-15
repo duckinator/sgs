@@ -1,4 +1,4 @@
-use log::{info, trace, warn};
+use log::info; // also available: trace, warn
 use eframe::egui;
 use eframe::egui::Pos2;
 
