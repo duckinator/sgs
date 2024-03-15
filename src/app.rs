@@ -13,11 +13,7 @@ pub const MIN_HEIGHT: f32 = 720.0;
 struct Dimensions {
     item_spacing: f32,
     margin: f32,
-    width: f32,
-    height: f32,
     button_size: [f32; 2],
-    rows: usize,
-    cols: usize,
 }
 
 impl Dimensions {
@@ -33,7 +29,7 @@ impl Dimensions {
 
         let button_size = [button_width, button_height];
 
-        Self { item_spacing, margin, width, height, button_size, rows, cols }
+        Self { item_spacing, margin, button_size }
     }
 }
 
