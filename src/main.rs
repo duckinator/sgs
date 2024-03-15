@@ -1,6 +1,8 @@
 #[cfg(not(target_arch = "wasm32"))]
 use eframe::egui;
 #[cfg(not(target_arch = "wasm32"))]
+use env_logger::Env;
+#[cfg(not(target_arch = "wasm32"))]
 use sgs::app::{
     MIN_WIDTH,
     MIN_HEIGHT,
@@ -16,6 +18,8 @@ fn main() { }
 
 #[cfg(not(target_arch = "wasm32"))]
 fn main() {
+    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
+
     let native_options = eframe::NativeOptions {
         min_window_size: Some(egui::vec2(MIN_WIDTH, MIN_HEIGHT)),
         ..Default::default()

@@ -30,6 +30,9 @@ nanoserde = "0.1.35"
 tts = "0.25.6"
 log = "0.4.21"
 
+# non-web:
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+env_logger = "0.11.3"
 
 # web:
 [target.'cfg(target_arch = "wasm32")'.dependencies]
