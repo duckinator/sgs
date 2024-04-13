@@ -1,2 +1,5 @@
 /target
 /_site
+venv/
+wordFrequency.xlsx
+.~*#
