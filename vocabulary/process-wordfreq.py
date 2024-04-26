@@ -72,4 +72,7 @@ boards = {}
 for (name, pos_filter) in categories.items():
     boards[name] = df[df['PoS'].isin(pos_filter)]['lemma'].tolist()
 
-print(boards)
+#print(boards)
+
+for key in boards.keys():
+    print(len(boards[key]), "\t", key)
