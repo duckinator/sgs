@@ -1,5 +1,6 @@
 /target
 /_site
-venv/
 wordFrequency.xlsx
 .~*#
+/vocabulary/cache/
+/vocabulary/words.tsv

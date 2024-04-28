@@ -1,1 +1,0 @@
-pandas[excel]==2.2.2
