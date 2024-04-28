@@ -2,6 +2,7 @@
 
 from bs4 import BeautifulSoup
 import csv
+import itertools
 import nltk
 from pathlib import Path
 from urllib.request import urlopen
@@ -78,9 +79,27 @@ def get_word_list():
 
 def get_normalized_word_list():
     def normalize(word):
-        result = [[x.name() for x in s.lemmas()] for s in wn.synsets(word) if len(s.lemmas()) == 1]
-        if len(result) > 0 and len(result[0]) > 0:
-            return result[0][0]
+        chunked_lemma_names = [[x.name() for x in s.lemmas()] for s in wn.synsets(word)]
+
+        # Given [[a, b], [b, c], [b], [c, b]] we want `num_lemma_names`
+        # to be {'a': 1, 'b': 4, 'c': 2}.
+        num_lemma_names = {}
+        for chunk in chunked_lemma_names:
+            for name in chunk:
+                if not name in num_lemma_names:
+                    num_lemma_names[name] = 0
+                num_lemma_names[name] += 1
+
+        # Given `num_lemma_names` of {'a': 1, 'b': 4, 'c': 2},
+        # we want `results` to be [('b', 4), ('c', 2), ('a', 1)]
+        results = sorted(itertools.zip_longest(num_lemma_names.values(), num_lemma_names.keys()), reverse=True)
+
+        # Given `results` of [('b', 4), ('c', 2), ('a', 1)],
+        # we want `results` to be `['b', 'c', 'a'].
+        results = [x[1] for x in results]
+
+        if len(results) > 0:
+            return results[0]
         else:
             return word
 
@@ -97,7 +116,7 @@ def get_normalized_word_list():
 def get_word_list_with_syntactic_categories():
     cats = {}
     for word in get_normalized_word_list():
-        cats[word] = set([syn.lexname() for syn in wn.synsets(word) if syn.lemmas()])
+        cats[word] = set([s.lexname() for s in wn.synsets(word) if s.name().startswith(f"{word}.")])
     return cats
 
 
