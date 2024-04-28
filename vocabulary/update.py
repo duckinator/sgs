@@ -94,6 +94,9 @@ def get_normalized_word_list():
         # we want `results` to be [(4, 'b'), (2, 'c'), (1, 'a')]
         results = sorted(itertools.zip_longest(num_lemma_names.values(), num_lemma_names.keys()), reverse=True)
 
+        # Handle situations like [(1, 'information_technology'), (1, 'IT')].
+        results = sorted(filter(lambda x: "_" not in x[1], results), reverse=True)
+
         # Given `results` of [('b', 4), ('c', 2), ('a', 1)],
         # we want `results` to be `['b', 'c', 'a'].
         results = [x[1] for x in results]
