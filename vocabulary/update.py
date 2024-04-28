@@ -58,7 +58,8 @@ def get_word_list():
     print(f"  Removed  {total_without_proper_nouns - total_without_phrases} multi-word phrases.")
 
     # Remove abbreviations (rd, km) and single consonants used as words (t, v).
-    words = [word for word in words if not re.compile("^[bcdfghjklmnpqrstvwxz]{1,2}$").match(word)]
+    words = [word for word in words if not re.compile("^[bcdfghjklmnpqrstvwxz]{1,2}$").match(word.lower())]
+    words = [word for word in words if word.lower() not in ["e", "y", "da", "de", "des", "le", "ed"]]
     total_without_abbrs = len(words)
     print(f"  Removed  {total_without_phrases - total_without_abbrs} two-letter abbreviations and single consonants")
 
@@ -94,12 +95,23 @@ def get_normalized_word_list():
         # we want `results` to be [(4, 'b'), (2, 'c'), (1, 'a')]
         results = sorted(itertools.zip_longest(num_lemma_names.values(), num_lemma_names.keys()), reverse=True)
 
+        # FIXME: Debug printing for known problems.
+        # WordNet doesn't have "me", "it", "an", "who" as words. Only acronyms.
+        for result in results:
+            if result[1] in ['Maine', 'IT', 'AN', 'WHO']:
+                print(word, results)
+
         # Handle situations like [(1, 'information_technology'), (1, 'IT')].
         results = sorted(filter(lambda x: "_" not in x[1], results), reverse=True)
 
         # Given `results` of [('b', 4), ('c', 2), ('a', 1)],
         # we want `results` to be `['b', 'c', 'a'].
         results = [x[1] for x in results]
+
+        # Given e.g. 'singer' and 'Singer', prefer the all-lowercase variant.
+        for result in results:
+            if result.lower() in results:
+                return result.lower()
 
         if len(results) > 0:
             return results[0]
@@ -142,7 +154,7 @@ def write_words_with_cats_tsv():
 
         writer.writerow(cols)
         for (word, cats) in words_with_cats.items():
-            print(f"{word:<20} {cats}")
+            #print(f"{word:<20} {cats}")
             row = [""] * len(cols)
             for cat in cats:
                 idx = cols.index(cat)
