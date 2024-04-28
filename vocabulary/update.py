@@ -91,7 +91,7 @@ def get_normalized_word_list():
                 num_lemma_names[name] += 1
 
         # Given `num_lemma_names` of {'a': 1, 'b': 4, 'c': 2},
-        # we want `results` to be [('b', 4), ('c', 2), ('a', 1)]
+        # we want `results` to be [(4, 'b'), (2, 'c'), (1, 'a')]
         results = sorted(itertools.zip_longest(num_lemma_names.values(), num_lemma_names.keys()), reverse=True)
 
         # Given `results` of [('b', 4), ('c', 2), ('a', 1)],
