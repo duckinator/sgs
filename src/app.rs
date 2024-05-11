@@ -1,4 +1,4 @@
-use log::info; // also available: trace, warn
+use log::{info, warn}; // also available: trace.
 use eframe::egui;
 use eframe::egui::Pos2;
 
@@ -156,7 +156,14 @@ impl eframe::App for App {
                             if let Some(button) = folder.get_button(col, row) {
                                 let egui_button = egui::Button::new(button.label.clone());
                                 if ui.add_sized(dimensions.button_size, egui_button).clicked() {
-                                    if folder.immediate {
+                                    if button.folder.unwrap_or(false) {
+                                        let index = self.system.folders.iter().position(|x| x.name == button.label);
+                                        if let Some(index) = index {
+                                            self.current_folder = index;
+                                        } else {
+                                            warn!("!!! Tried to open folder named '{}', which does not exist.", button.label);
+                                        }
+                                    } else if folder.immediate {
                                         self.speech_engine.speak(button.get_pronouncible_text(&self.system)).expect("Failed to speak word");
                                     } else {
                                         self.panel.add_entry(button);
