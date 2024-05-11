@@ -1,4 +1,5 @@
 pub mod app;
+pub mod cli;
 pub mod system;
 pub mod button;
 pub mod panel;

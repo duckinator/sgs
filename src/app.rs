@@ -5,6 +5,7 @@ use eframe::egui::Pos2;
 use crate::system::System;
 use crate::panel::Panel;
 use crate::speech::SpeechEngine;
+use crate::cli;
 
 use std::cmp;
 
@@ -51,8 +52,10 @@ impl App {
         let speech_engine = SpeechEngine::default().expect("Failed to initialize text-to-speech system");
         let panel = Panel::default();
 
+        let args = cli::parse_args().unwrap();
+
         let system: System =
-            if let Some(system_file) = std::env::args().nth(1) {
+            if let Some(system_file) = args.system {
                 System::load_file(&system_file).expect("Failed to load System from specified file")
             } else {
                 System::load_str(include_str!("../system-wiki2016.json")).expect("Failed to load bundled System. (This should never happen.)")
