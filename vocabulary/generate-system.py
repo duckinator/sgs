@@ -10,13 +10,15 @@
 #   Interjections: 
 #   Conjunction: ... (persistent)
 
+from sortedcontainers import SortedSet
+
 import csv
 
 with open("words.tsv") as tsvfile:
     reader = csv.reader(tsvfile, delimiter="\t")
     headers = next(reader)
 
-    words = dict(map(lambda x: [x, set()], headers[1:]))
+    words = dict(map(lambda x: [x, SortedSet()], headers[1:]))
     for row in reader:
         word = row[0]
         for idx in range(1, len(headers)):
@@ -27,7 +29,7 @@ with open("words.tsv") as tsvfile:
 
 def cats(*folders):
     global words # i know, i know, i'm sorry
-    results = set()
+    results = SortedSet()
     for category in folders:
         results.update(words[category])
     return results
@@ -54,7 +56,7 @@ folders = {
     'Modifiers': cats('adv.all'),
 }
 
-folders['Pronouns'] = {
+folders['Pronouns'] = SortedSet([
     'I',
     'you',
     'it',
@@ -67,9 +69,9 @@ folders['Pronouns'] = {
     'this',
     'that',
     'we',
-}
+])
 
-folders['Animals/Body Parts'] = {
+folders['Animals/Body Parts'] = SortedSet([
     'antenna',
     'breast',
     'coat',
@@ -95,7 +97,7 @@ folders['Animals/Body Parts'] = {
     'vein',
     'wing',
     'wool',
-}
+])
 
 folders['Animals'] = cats('noun.animal').difference(folders['Animals/Body Parts'], {
     'assault',

@@ -8,6 +8,7 @@ pandas = {version = "==2.2.2", extras = ["excel"]}
 bs4 = "*"
 nltk = "*"
 numpy = "*"
+sortedcontainers = "*"
 
 [dev-packages]
 
