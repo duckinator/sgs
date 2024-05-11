@@ -7,6 +7,7 @@ use std::collections::hash_map::HashMap;
 #[derive(Clone, Debug, Default, DeJson, SerJson, PartialEq)]
 pub struct Folder {
     pub name: String,
+    pub toplevel: bool,
     pub immediate: bool,
     pub rows: usize,
     pub cols: usize,
@@ -49,6 +50,17 @@ impl System {
     pub fn load_str(json: &str) -> Result<System, DeJsonErr> {
         DeJson::deserialize_json(json)
     }
+
+    pub fn toplevel_folders(&self) -> Vec<&Folder> {
+        let mut folders = vec![];
+        for folder in &self.folders {
+            if folder.toplevel {
+                folders.push(folder);
+            }
+        }
+
+        folders
+    }
 }
 
 #[test]
@@ -59,6 +71,7 @@ fn test_system() {
         "folders": [
             {
                 "name": "Home",
+                "toplevel": true,
                 "immediate": false,
                 "rows": 4,
                 "cols": 6,
@@ -71,11 +84,22 @@ fn test_system() {
             },
             {
                 "name": "Quick Response",
+                "toplevel": true,
                 "immediate": true,
                 "rows": 1,
                 "cols": 1,
                 "buttons": [
                     {"label": "Hey!"}
+                ]
+            },
+            {
+                "name": "Hidden Folder",
+                "toplevel": false,
+                "immediate": false,
+                "rows": 1,
+                "cols": 1,
+                "buttons": [
+                    {"label": "this folder is hidden"},
                 ]
             }
         ],
@@ -111,11 +135,14 @@ fn test_system() {
     }"#;
 
     let system: System = DeJson::deserialize_json(json).unwrap();
-    let folder = &system.folders[0];
 
+    assert_eq!(true, system.folders[0].toplevel);
+    assert_eq!(true, system.folders[1].toplevel);
+    assert_eq!(system.toplevel_folders(), vec![&system.folders[0], &system.folders[1]]);
+
+    let folder = &system.folders[0];
     assert_eq!("Home", folder.name);
     assert_eq!(false, folder.immediate);
-
     assert_eq!("hello", folder.buttons[0].as_ref().unwrap().label);
     assert_eq!("world", folder.buttons[1].as_ref().unwrap().label);
     assert_eq!("what", folder.buttons[4 * 6 - 1].as_ref().unwrap().label);

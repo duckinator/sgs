@@ -4,6 +4,7 @@
     "folders": [
         {
             "name": "Home",
+            "toplevel": true,
             "immediate": false,
             "rows": 6,
             "cols": 9,
@@ -22,6 +23,7 @@
 
         {
             "name": "Quick Reply",
+            "toplevel": true,
             "immediate": true,
             "rows": 4,
             "cols": 6,
@@ -30,6 +32,20 @@
                 null, null, null, null, null, null,
                 null, null, null, null, null, null,
                 null, null, null, null, null, null
+            ]
+        },
+
+        {
+            "name": "Hidden Folder",
+            "toplevel": false,
+            "immediate": false,
+            "rows": 4,
+            "cols": 4,
+            "buttons": [
+                {"label": "This"}, {"label": "folder"}, {"label": "is"}, {"label": "hidden"},
+                null, null, null, null,
+                null, null, null, null,
+                null, null, null, null
             ]
         }
     ],

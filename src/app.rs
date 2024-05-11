@@ -140,7 +140,7 @@ impl eframe::App for App {
 
                 // Row 2, Column 1
                 egui::Grid::new("folder-selector-grid").show(ui, |ui| {
-                    for (idx, folder) in self.system.folders.iter().enumerate() {
+                    for (idx, folder) in self.system.toplevel_folders().iter().enumerate() {
                         let egui_button = egui::Button::new(folder.name.clone()).selected(self.current_folder == idx);
                         if ui.add_sized(dimensions.button_size, egui_button).clicked() {
                             self.current_folder = idx;
