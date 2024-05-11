@@ -205,7 +205,7 @@ def folder(name, buttons, toplevel=False, immediate=False, rows=6, cols=9):
     }
 
 def button(word, **options):
-    return {'label': word, **options},
+    return {'label': word, **options}
 
 def buttons(words, **options):
     remaining = []
@@ -234,7 +234,6 @@ nouns_subfolders = [
     folder('People',    buttons(folders['Nouns/People'])),
     folder('Plants',    buttons(folders['Nouns/Plants'])),
     folder('Possession',    buttons(folders['Nouns/Possession'])),
-    folder('Pronouns',  buttons(folders['Pronouns'])),
 
     folder('Animal Body Parts', buttons(folders['Animals/Body Parts'])),
 ]
@@ -257,18 +256,25 @@ nouns_subfolders_names = [
     'People',
     'Plants',
     'Possession',
-    'Pronouns',
 ]
+
+
+verb_categories = ['verb.body', 'verb.change', 'verb.cognition', 'verb.communication', 'verb.competition', 'verb.consumption', 'verb.contact', 'verb.creation', 'verb.emotion', 'verb.motion', 'verb.perception', 'verb.possession', 'verb.social', 'verb.stative', 'verb.weather']
+verbs_subfolders = [folder(category.split('.')[1].capitalize(), buttons(cats(category))) for category in verb_categories]
+verbs_subfolders_names = [sf['name'] for sf in verbs_subfolders]
 
 # 9 cols x 6 rows
 system = {
     "name": "Wikipedia 2016 Top 10k",
     "description": "A system generated from the top 10,000 words on Wikipedia in 2016.",
     "folders": [
-        folder('Names & Pronouns', buttons(nouns_subfolders_names, folder=True, toplevel=True)),
+        folder('Pronouns',  buttons(folders['Pronouns']), toplevel=True),
+        folder('Nouns',     buttons(nouns_subfolders_names, folder=True), toplevel=True),
+        folder('Verbs',     buttons(verbs_subfolders_names, folder=True), toplevel=True),
         folder('Attributes',    buttons(folders['Attributes']), toplevel=True),
         folder('Modifiers',     buttons(folders['Modifiers']), toplevel=True),
         *nouns_subfolders,
+        *verbs_subfolders,
     ],
     "hotbar": {
         "rows": 1,
