@@ -6,6 +6,7 @@ pub struct Button {
     pub label: String,
     pub pronunciation: Option<String>,
     pub image: Option<String>,
+    pub folder: Option<bool>,
     related: Option<usize>,
     variant: Option<usize>,
 }
@@ -14,7 +15,8 @@ impl Button {
     pub fn new(label: String, pronunciation: Option<String>, image: Option<String>) -> Self {
         let related = None;
         let variant = None;
-        Self { label, pronunciation, image, related, variant }
+        let folder = None;
+        Self { label, pronunciation, image, folder, related, variant }
     }
 
     pub fn get_related_word_label(&self, system: &System) -> String {
