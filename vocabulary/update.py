@@ -97,9 +97,14 @@ def get_normalized_word_list():
 
         # FIXME: Debug printing for known problems.
         # WordNet doesn't have "me", "it", "an", "who" as words. Only acronyms.
-        for result in results:
-            if result[1] in ['Maine', 'IT', 'AN', 'WHO']:
-                print(word, results)
+        for idx, result in enumerate(results):
+            match result[1]:
+                case "Maine":
+                    print("!! Forcing 'Maine' back to 'me'")
+                    results[idx] = (result[0], "me")
+                case "IT" | "AN" | "WHO":
+                    print(f"!! Forcing {result[1]} back to lowercase.")
+                    results[idx] = (result[0], result[1].lower())
 
         # Handle situations like [(1, 'information_technology'), (1, 'IT')].
         results = sorted(filter(lambda x: "_" not in x[1], results), reverse=True)
