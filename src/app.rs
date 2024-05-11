@@ -51,8 +51,12 @@ impl App {
         let speech_engine = SpeechEngine::default().expect("Failed to initialize text-to-speech system");
         let panel = Panel::default();
 
-        //let system: System = System::load_file("system.json").expect("Failed to load System from ./system.json");
-        let system: System = System::load_str(include_str!("../system-wiki2016.json")).expect("Failed to load System from bundled system.json");
+        let system: System =
+            if let Some(system_file) = std::env::args().nth(1) {
+                System::load_file(&system_file).expect("Failed to load System from specified file")
+            } else {
+                System::load_str(include_str!("../system-wiki2016.json")).expect("Failed to load bundled System. (This should never happen.)")
+            };
         info!("Loaded System configuration.");
 
         let current_folder = 0;
