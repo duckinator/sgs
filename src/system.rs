@@ -32,13 +32,34 @@ pub struct System {
 }
 
 impl Folder {
-    pub fn get_button(&self, col: usize, row: usize) -> Option<&Button> {
-        if let Some(btn) = self.buttons.get(row * self.cols + col) {
+    pub fn get_button(&self, current_page: usize, col: usize, row: usize) -> Option<&Button> {
+        let offset = current_page * self.rows * self.cols;
+        let position = row * self.cols + col;
+
+        if let Some(btn) = self.buttons.get(offset + position) {
             return btn.as_ref();
         } else {
             return None;
         }
     }
+
+    pub fn needs_pagination(&self) -> bool {
+        self.buttons.len() > (self.rows * self.cols)
+    }
+
+    pub fn next_page(&self, current_page: usize) -> usize {
+        if !self.needs_pagination() {
+            return 0;
+        }
+
+        let skipped = (self.rows * self.cols) * (current_page + 1);
+        if skipped < self.buttons.len() {
+            current_page + 1
+        } else {
+            0
+        }
+    }
+
 }
 
 impl System {
