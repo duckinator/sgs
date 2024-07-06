@@ -4,6 +4,7 @@
     "folders": [
         {
             "name": "Pronouns",
+            "id": "Pronouns",
             "toplevel": true,
             "immediate": false,
             "rows": 6,
@@ -49,6 +50,7 @@
         },
         {
             "name": "Nouns",
+            "id": "Nouns",
             "toplevel": true,
             "immediate": false,
             "rows": 6,
@@ -56,69 +58,72 @@
             "buttons": [
                 {
                     "label": "Animals",
-                    "folder": true
+                    "folder": "Nouns::Animals"
                 },
                 {
                     "label": "Body",
-                    "folder": true
+                    "folder": "Nouns::Body"
                 },
                 {
                     "label": "Actions",
-                    "folder": true
+                    "folder": "Nouns::Actions"
                 },
                 {
                     "label": "Artifacts",
-                    "folder": true
+                    "folder": "Nouns::Artifacts"
                 },
                 {
                     "label": "Cognition",
-                    "folder": true
+                    "folder": "Nouns::Cognition"
                 },
                 {
                     "label": "Communication",
-                    "folder": true
+                    "folder": "Nouns::Communication"
                 },
                 {
                     "label": "Events",
-                    "folder": true
+                    "folder": "Nouns::Events"
                 },
                 {
                     "label": "Feelings",
-                    "folder": true
+                    "folder": "Nouns::Feelings"
                 },
                 {
                     "label": "Food",
-                    "folder": true
+                    "folder": "Nouns::Food"
                 },
                 {
-                    "label": "Group",
-                    "folder": true
+                    "label": "Groups",
+                    "folder": "Nouns::Groups"
                 },
                 {
-                    "label": "Location",
-                    "folder": true
+                    "label": "Locations",
+                    "folder": "Nouns::Locations"
                 },
                 {
                     "label": "Motives",
-                    "folder": true
+                    "folder": "Nouns::Motives"
                 },
                 {
                     "label": "Object",
-                    "folder": true
+                    "folder": "Nouns::Object"
                 },
                 {
                     "label": "People",
-                    "folder": true
+                    "folder": "Nouns::People"
                 },
                 {
                     "label": "Plants",
-                    "folder": true
+                    "folder": "Nouns::Plants"
                 },
                 {
                     "label": "Possession",
-                    "folder": true
+                    "folder": "Nouns::Possession"
                 },
-                null,
+                {
+                    "label": "Body Parts",
+                    "folder": "Nouns::Animals::Body Parts"
+                },
                 null,
                 null,
                 null,
@@ -160,6 +165,7 @@
         },
         {
             "name": "Verbs",
+            "id": "Verbs",
             "toplevel": true,
             "immediate": false,
             "rows": 6,
@@ -167,63 +173,63 @@
             "buttons": [
                 {
                     "label": "Body",
-                    "folder": true
+                    "folder": "Verbs::Body"
                 },
                 {
                     "label": "Change",
-                    "folder": true
+                    "folder": "Verbs::Change"
                 },
                 {
                     "label": "Cognition",
-                    "folder": true
+                    "folder": "Verbs::Cognition"
                 },
                 {
                     "label": "Communication",
-                    "folder": true
+                    "folder": "Verbs::Communication"
                 },
                 {
                     "label": "Competition",
-                    "folder": true
+                    "folder": "Verbs::Competition"
                 },
                 {
                     "label": "Consumption",
-                    "folder": true
+                    "folder": "Verbs::Consumption"
                 },
                 {
                     "label": "Contact",
-                    "folder": true
+                    "folder": "Verbs::Contact"
                 },
                 {
                     "label": "Creation",
-                    "folder": true
+                    "folder": "Verbs::Creation"
                 },
                 {
                     "label": "Emotion",
-                    "folder": true
+                    "folder": "Verbs::Emotion"
                 },
                 {
                     "label": "Motion",
-                    "folder": true
+                    "folder": "Verbs::Motion"
                 },
                 {
                     "label": "Perception",
-                    "folder": true
+                    "folder": "Verbs::Perception"
                 },
                 {
                     "label": "Possession",
-                    "folder": true
+                    "folder": "Verbs::Possession"
                 },
                 {
                     "label": "Social",
-                    "folder": true
+                    "folder": "Verbs::Social"
                 },
                 {
                     "label": "Stative",
-                    "folder": true
+                    "folder": "Verbs::Stative"
                 },
                 {
                     "label": "Weather",
-                    "folder": true
+                    "folder": "Verbs::Weather"
                 },
                 null,
                 null,
@@ -268,6 +274,7 @@
         },
         {
             "name": "Attributes",
+            "id": "Attributes",
             "toplevel": true,
             "immediate": false,
             "rows": 6,
@@ -3676,6 +3683,7 @@
         },
         {
             "name": "Modifiers",
+            "id": "Modifiers",
             "toplevel": true,
             "immediate": false,
             "rows": 6,
@@ -4729,14 +4737,15 @@
         },
         {
             "name": "Animals",
+            "id": "Nouns::Animals",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
             "cols": 9,
             "buttons": [
                 {
-                    "label": "Animal Body Parts",
-                    "folder": true
+                    "label": "Body Parts",
+                    "folder": "Nouns::Animals::Body Parts"
                 },
                 null,
                 null,
@@ -4933,6 +4942,7 @@
         },
         {
             "name": "Body",
+            "id": "Nouns::Body",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -5311,6 +5321,7 @@
         },
         {
             "name": "Actions",
+            "id": "Nouns::Actions",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -7825,6 +7836,7 @@
         },
         {
             "name": "Artifacts",
+            "id": "Nouns::Artifacts",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -10291,6 +10303,7 @@
         },
         {
             "name": "Cognition",
+            "id": "Nouns::Cognition",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -11854,6 +11867,7 @@
         },
         {
             "name": "Communication",
+            "id": "Nouns::Communication",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -14023,6 +14037,7 @@
         },
         {
             "name": "Events",
+            "id": "Nouns::Events",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -14731,6 +14746,7 @@
         },
         {
             "name": "Feelings",
+            "id": "Nouns::Feelings",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -14965,6 +14981,7 @@
         },
         {
             "name": "Food",
+            "id": "Nouns::Food",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -15298,6 +15315,7 @@
         },
         {
             "name": "Groups",
+            "id": "Nouns::Groups",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -16372,6 +16390,7 @@
         },
         {
             "name": "Locations",
+            "id": "Nouns::Locations",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -16945,6 +16964,7 @@
         },
         {
             "name": "Motives",
+            "id": "Nouns::Motives",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -16981,6 +17001,7 @@
         },
         {
             "name": "Object",
+            "id": "Nouns::Object",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -17476,6 +17497,7 @@
         },
         {
             "name": "People",
+            "id": "Nouns::People",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -19003,6 +19025,7 @@
         },
         {
             "name": "Plants",
+            "id": "Nouns::Plants",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -19270,6 +19293,7 @@
         },
         {
             "name": "Possession",
+            "id": "Nouns::Possession",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -19719,7 +19743,8 @@
             ]
         },
         {
-            "name": "Animal Body Parts",
+            "name": "Body Parts",
+            "id": "Nouns::Animals::Body Parts",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -19801,6 +19826,7 @@
         },
         {
             "name": "Body",
+            "id": "Verbs::Body",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -20122,6 +20148,7 @@
         },
         {
             "name": "Change",
+            "id": "Verbs::Change",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -21427,6 +21454,7 @@
         },
         {
             "name": "Cognition",
+            "id": "Verbs::Cognition",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -22093,6 +22121,7 @@
         },
         {
             "name": "Communication",
+            "id": "Verbs::Communication",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -23203,6 +23232,7 @@
         },
         {
             "name": "Competition",
+            "id": "Verbs::Competition",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -23674,6 +23704,7 @@
         },
         {
             "name": "Consumption",
+            "id": "Verbs::Consumption",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -23866,6 +23897,7 @@
         },
         {
             "name": "Contact",
+            "id": "Verbs::Contact",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -25132,6 +25164,7 @@
         },
         {
             "name": "Creation",
+            "id": "Verbs::Creation",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -25729,6 +25762,7 @@
         },
         {
             "name": "Emotion",
+            "id": "Verbs::Emotion",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -25975,6 +26009,7 @@
         },
         {
             "name": "Motion",
+            "id": "Verbs::Motion",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -26833,6 +26868,7 @@
         },
         {
             "name": "Perception",
+            "id": "Verbs::Perception",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -27217,6 +27253,7 @@
         },
         {
             "name": "Possession",
+            "id": "Verbs::Possession",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -27973,6 +28010,7 @@
         },
         {
             "name": "Social",
+            "id": "Verbs::Social",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -29014,6 +29052,7 @@
         },
         {
             "name": "Stative",
+            "id": "Verbs::Stative",
             "toplevel": false,
             "immediate": false,
             "rows": 6,
@@ -29827,6 +29866,7 @@
         },
         {
             "name": "Weather",
+            "id": "Verbs::Weather",
             "toplevel": false,
             "immediate": false,
             "rows": 6,

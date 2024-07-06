@@ -38,12 +38,12 @@ folders = {
     'Nouns/Actions': cats('noun.act'),
     'Nouns/Artifacts': cats('noun.artifact'),
     'Nouns/Attributes': cats('noun.attribute'),
-    'Body': cats('noun.body'),
+    'Nouns/Body': cats('noun.body'),
     'Nouns/Cognition': cats('noun.cognition'),
     'Nouns/Communication': cats('noun.communication').difference({'a', 'u'}),
-    'Events': cats('noun.event'),
-    'Feelings': cats('noun.feeling'),
-    'Food': cats('noun.food'),
+    'Nouns/Events': cats('noun.event'),
+    'Nouns/Feelings': cats('noun.feeling'),
+    'Nouns/Food': cats('noun.food'),
     'Nouns/Group': cats('noun.group'),
     'Nouns/Location': cats('noun.location'),
     'Nouns/Motives': cats('noun.motive'),
@@ -71,7 +71,7 @@ folders['Pronouns'] = SortedSet([
     'we',
 ])
 
-folders['Animals/Body Parts'] = SortedSet([
+folders['Nouns/Animals/Body Parts'] = SortedSet([
     'antenna',
     'breast',
     'coat',
@@ -99,7 +99,7 @@ folders['Animals/Body Parts'] = SortedSet([
     'wool',
 ])
 
-folders['Animals'] = cats('noun.animal').difference(folders['Animals/Body Parts'], {
+folders['Nouns/Animals'] = cats('noun.animal').difference(folders['Nouns/Animals/Body Parts'], {
     'assault',
     'bay',
     'beef',
@@ -160,12 +160,12 @@ folders['Nouns/Remaining'] = cats(
     folders['Nouns/Actions'],
     folders['Nouns/Artifacts'],
     folders['Nouns/Attributes'],
-    folders['Body'],
+    folders['Nouns/Body'],
     folders['Nouns/Cognition'],
     folders['Nouns/Communication'],
-    folders['Events'],
-    folders['Feelings'],
-    folders['Food'],
+    folders['Nouns/Events'],
+    folders['Nouns/Feelings'],
+    folders['Nouns/Food'],
     folders['Nouns/Group'],
     folders['Nouns/Location'],
     folders['Nouns/Motives'],
@@ -173,8 +173,8 @@ folders['Nouns/Remaining'] = cats(
     folders['Nouns/People'],
     folders['Nouns/Plants'],
     folders['Nouns/Possession'],
-    folders['Animals/Body Parts'],
-    folders['Animals'],
+    folders['Nouns/Animals/Body Parts'],
+    folders['Nouns/Animals'],
 )
 
 #    'body': cats('verb.body'),
@@ -198,7 +198,8 @@ from pprint import pprint
 
 def folder(name, buttons, toplevel=False, immediate=False, rows=6, cols=9):
     return {
-        "name": name,
+        "name": name.split("::")[-1],
+        "id": name,
         "toplevel": toplevel,
         "immediate": immediate,
         "rows": rows,
@@ -207,6 +208,9 @@ def folder(name, buttons, toplevel=False, immediate=False, rows=6, cols=9):
     }
 
 def button(word, **options):
+    if 'folder' in options and options['folder']:
+        options['folder'] = word
+        word = word.split('::')[-1]
     return {'label': word, **options}
 
 def buttons(words, **options):
@@ -219,51 +223,32 @@ def folder_button(word, **options):
     return button(word, folder=True, **options)
 
 nouns_subfolders = [
-    folder('Animals',   buttons(['Animal Body Parts'], folder=True) + buttons(folders['Animals'])),
-    folder('Body',      buttons(folders['Body'])),
-    folder('Actions',   buttons(folders['Nouns/Actions'])),
-    folder('Artifacts', buttons(folders['Nouns/Artifacts'])),
-    folder('Cognition', buttons(folders['Nouns/Cognition'])),
-    folder('Communication', buttons(folders['Nouns/Communication'])),
-    folder('Events',    buttons(folders['Events'])),
-    folder('Feelings',  buttons(folders['Feelings'])),
-    folder('Food',      buttons(folders['Food'])),
+    folder('Nouns::Animals',   buttons(['Nouns::Animals::Body Parts'], folder=True) + buttons(folders['Nouns/Animals'])),
+    folder('Nouns::Body',      buttons(folders['Nouns/Body'])),
+    folder('Nouns::Actions',   buttons(folders['Nouns/Actions'])),
+    folder('Nouns::Artifacts', buttons(folders['Nouns/Artifacts'])),
+    folder('Nouns::Cognition', buttons(folders['Nouns/Cognition'])),
+    folder('Nouns::Communication', buttons(folders['Nouns/Communication'])),
+    folder('Nouns::Events',    buttons(folders['Nouns/Events'])),
+    folder('Nouns::Feelings',  buttons(folders['Nouns/Feelings'])),
+    folder('Nouns::Food',      buttons(folders['Nouns/Food'])),
 
-    folder('Groups',    buttons(folders['Nouns/Group'])),
-    folder('Locations', buttons(folders['Nouns/Location'])),
-    folder('Motives',   buttons(folders['Nouns/Motives'])),
-    folder('Object',    buttons(folders['Nouns/Object'])),
-    folder('People',    buttons(folders['Nouns/People'])),
-    folder('Plants',    buttons(folders['Nouns/Plants'])),
-    folder('Possession',    buttons(folders['Nouns/Possession'])),
+    folder('Nouns::Groups',    buttons(folders['Nouns/Group'])),
+    folder('Nouns::Locations', buttons(folders['Nouns/Location'])),
+    folder('Nouns::Motives',   buttons(folders['Nouns/Motives'])),
+    folder('Nouns::Object',    buttons(folders['Nouns/Object'])),
+    folder('Nouns::People',    buttons(folders['Nouns/People'])),
+    folder('Nouns::Plants',    buttons(folders['Nouns/Plants'])),
+    folder('Nouns::Possession',    buttons(folders['Nouns/Possession'])),
 
-    folder('Animal Body Parts', buttons(folders['Animals/Body Parts'])),
+    folder('Nouns::Animals::Body Parts', buttons(folders['Nouns/Animals/Body Parts'])),
 ]
-
-nouns_subfolders_names = [
-    'Animals',
-    'Body',
-    'Actions',
-    'Artifacts',
-    'Cognition',
-    'Communication',
-    'Events',
-    'Feelings',
-    'Food',
-
-    'Group',
-    'Location',
-    'Motives',
-    'Object',
-    'People',
-    'Plants',
-    'Possession',
-]
+nouns_subfolders_names = [sf['id'] for sf in nouns_subfolders]
 
 
 verb_categories = ['verb.body', 'verb.change', 'verb.cognition', 'verb.communication', 'verb.competition', 'verb.consumption', 'verb.contact', 'verb.creation', 'verb.emotion', 'verb.motion', 'verb.perception', 'verb.possession', 'verb.social', 'verb.stative', 'verb.weather']
-verbs_subfolders = [folder(category.split('.')[1].capitalize(), buttons(cats(category))) for category in verb_categories]
-verbs_subfolders_names = [sf['name'] for sf in verbs_subfolders]
+verbs_subfolders = [folder('Verbs::' + category.split('.')[1].capitalize(), buttons(cats(category))) for category in verb_categories]
+verbs_subfolders_names = [sf['id'] for sf in verbs_subfolders]
 
 # 9 cols x 6 rows
 system = {

@@ -152,43 +152,41 @@ impl eframe::App for App {
 
                 // Row 2, Column 1
                 egui::Grid::new("folder-selector-grid").show(ui, |ui| {
+                    let current_toplevel_folder = self.system.toplevel_folder_for(self.current_folder);
                     for (idx, folder) in self.system.toplevel_folders().iter().enumerate() {
-                        let egui_button = egui::Button::new(folder.name.clone()).selected(self.current_folder == idx);
+                        let egui_button = egui::Button::new(folder.name.clone()).selected(current_toplevel_folder == idx);
                         if ui.add_sized(dimensions.button_size, egui_button).clicked() {
                             self.current_page = 0;
                             self.current_folder = idx;
                         }
                         ui.end_row();
                     }
-
-                    if folder.needs_pagination() {
-                        let label = format!("{}\n->", self.current_page + 1);
-                        let egui_button = egui::Button::new(label);
-                        if ui.add_sized(dimensions.button_size, egui_button).clicked() {
-                            self.current_page = folder.next_page(self.current_page);
-                        }
-                    } else {
-                        // If we don't need pagination, it's always page 0.
-                        self.current_page = 0;
-                        let egui_button = egui::Button::new("");
-                        let _ = ui.add_sized(dimensions.button_size, egui_button);
-                    }
-                    ui.end_row();
                 });
 
                 // Row 2, Column 2
                 egui::Grid::new("active-folder").show(ui, |ui| {
                     for row in 0..folder.rows {
                         for col in 0..folder.cols {
+                            if col == (folder.cols - 1) && row == (folder.rows - 1) && folder.needs_pagination() {
+                                let pages = folder.buttons.len() / (folder.rows * folder.cols);
+                                let label = format!("{}/{}\n->", self.current_page + 1, pages);
+                                let egui_button = egui::Button::new(label);
+                                if ui.add_sized(dimensions.button_size, egui_button).clicked() {
+                                    self.current_page = folder.next_page(self.current_page);
+                                }
+                                break;
+                            }
+
+
                             if let Some(button) = folder.get_button(self.current_page, col, row) {
                                 let egui_button = egui::Button::new(button.label.clone());
                                 if ui.add_sized(dimensions.button_size, egui_button).clicked() {
-                                    if button.folder.unwrap_or(false) {
-                                        let index = self.system.folders.iter().position(|x| x.name == button.label);
+                                    if let Some(btn_folder) = &button.folder {
+                                        let index = self.system.folders.iter().position(|x| &x.id == btn_folder);
                                         if let Some(index) = index {
                                             self.current_folder = index;
                                         } else {
-                                            warn!("!!! Tried to open folder named '{}', which does not exist.", button.label);
+                                            warn!("!!! Tried to open folder named '{}', which does not exist.", btn_folder);
                                         }
                                     } else if folder.immediate {
                                         self.speech_engine.speak(button.get_pronouncible_text(&self.system)).expect("Failed to speak word");

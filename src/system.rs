@@ -7,6 +7,7 @@ use std::collections::hash_map::HashMap;
 #[derive(Clone, Debug, Default, DeJson, SerJson, PartialEq)]
 pub struct Folder {
     pub name: String,
+    pub id: String,
     pub toplevel: bool,
     pub immediate: bool,
     pub rows: usize,
@@ -104,6 +105,13 @@ impl System {
 
         folders
     }
+
+    pub fn toplevel_folder_for(&self, folder: usize) -> usize {
+        let folder_id = &self.folders[folder].id;
+        // Split at ::, store the first item (if it exists) or the entire string (if it doesn't).
+        let toplevel_name = folder_id.split("::").next().unwrap_or(&folder_id);
+        self.toplevel_folders().iter().position(|f| f.id == toplevel_name).expect("somehow got invalid folder")
+    }
 }
 
 #[test]
@@ -114,6 +122,7 @@ fn test_system() {
         "folders": [
             {
                 "name": "Home",
+                "id": "Home",
                 "toplevel": true,
                 "immediate": false,
                 "rows": 4,
@@ -127,6 +136,7 @@ fn test_system() {
             },
             {
                 "name": "Quick Response",
+                "id": "Quick Response",
                 "toplevel": true,
                 "immediate": true,
                 "rows": 1,

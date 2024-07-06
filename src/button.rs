@@ -6,7 +6,7 @@ pub struct Button {
     pub label: String,
     pub pronunciation: Option<String>,
     pub image: Option<String>,
-    pub folder: Option<bool>,
+    pub folder: Option<String>,
     related: Option<usize>,
     variant: Option<usize>,
 }
