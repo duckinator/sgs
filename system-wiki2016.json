@@ -29895,7 +29895,68 @@
     "hotbar": {
         "rows": 1,
         "cols": 9,
-        "buttons": []
+        "buttons": [
+            {
+                "label": "the"
+            },
+            {
+                "label": "be"
+            },
+            {
+                "label": "to"
+            },
+            {
+                "label": "of"
+            },
+            {
+                "label": "and"
+            },
+            {
+                "label": "a"
+            },
+            {
+                "label": "in"
+            },
+            {
+                "label": "have"
+            },
+            {
+                "label": "for"
+            },
+            {
+                "label": "not"
+            },
+            {
+                "label": "on"
+            },
+            {
+                "label": "with"
+            },
+            {
+                "label": "as"
+            },
+            {
+                "label": "at"
+            },
+            {
+                "label": "but"
+            },
+            {
+                "label": "by"
+            },
+            {
+                "label": "from"
+            },
+            {
+                "label": "or"
+            },
+            {
+                "label": "out"
+            },
+            {
+                "label": "if"
+            }
+        ]
     },
     "variants": {
         "hello": [

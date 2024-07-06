@@ -281,7 +281,29 @@ system = {
     "hotbar": {
         "rows": 1,
         "cols": 9,
-        "buttons": [], # TODO.
+        "buttons": list(map(lambda word: {"label": word},
+            """
+            the
+            be
+            to
+            of
+            and
+            a
+            in
+            have
+            for
+            not
+            on
+            with
+            as
+            at
+            but
+            by
+            from
+            or
+            out
+            if
+            """.split())),
     },
     "variants": { # TODO.
         "hello": [

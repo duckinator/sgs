@@ -42,6 +42,7 @@ pub struct App {
     system: System,
     current_folder: usize,
     current_page: usize,
+    current_hotbar_page: usize,
 }
 
 impl App {
@@ -65,14 +66,16 @@ impl App {
 
         let current_folder = 0;
         let current_page = 0;
+        let current_hotbar_page = 0;
 
-        Self { speech_engine, panel, system, current_folder, current_page }
+        Self { speech_engine, panel, system, current_folder, current_page, current_hotbar_page }
     }
 }
 
 impl eframe::App for App {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         let screen_size = ctx.input(|i| i.screen_rect().max);
+        let hotbar = &self.system.hotbar;
         let folder = &self.system.folders[self.current_folder];
         let dimensions = Dimensions::new(screen_size, folder.rows, folder.cols);
 
@@ -202,6 +205,30 @@ impl eframe::App for App {
                         }
                         ui.end_row();
                     }
+
+                    for col in 0..folder.cols {
+                        if col == (folder.cols - 1) {
+                            let label = format!("{}\n->", self.current_hotbar_page + 1);
+                            let egui_button = egui::Button::new(label);
+                            if ui.add_sized(dimensions.button_size, egui_button).clicked() {
+                                self.current_hotbar_page = self.system.hotbar.next_page(folder.cols, self.current_hotbar_page);
+                            }
+                            break;
+                        }
+
+                        if let Some(button) = hotbar.get_button(folder.cols, self.current_hotbar_page, col) {
+                            let egui_button = egui::Button::new(button.label.clone());
+                            if ui.add_sized(dimensions.button_size, egui_button).clicked() {
+                                self.panel.add_entry(button);
+                            }
+                        } else {
+                            // No button for this position on the hotbar.
+                            let egui_label = egui::Label::new("");
+                            //let egui_label = egui::Button::new("");
+                            ui.add_sized(dimensions.button_size, egui_label);
+                        }
+                    }
+                    ui.end_row();
                 });
 
                 // Row 2, Column 3

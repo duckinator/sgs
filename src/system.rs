@@ -31,6 +31,28 @@ pub struct System {
     pub related: HashMap<String, Vec<Button>>,
 }
 
+impl Hotbar {
+    pub fn get_button(&self, folder_cols: usize, current_hotbar_page: usize, col: usize) -> Option<&Button> {
+        let offset = current_hotbar_page * folder_cols;
+        let position = col;
+
+        if let Some(btn) = self.buttons.get(offset + position) {
+            return btn.as_ref();
+        } else {
+            return None;
+        }
+    }
+
+    pub fn next_page(&self, folder_cols: usize, current_page: usize) -> usize {
+        let skipped = folder_cols * (current_page + 1);
+        if skipped < self.buttons.len() {
+            current_page + 1
+        } else {
+            0
+        }
+    }
+}
+
 impl Folder {
     pub fn get_button(&self, current_page: usize, col: usize, row: usize) -> Option<&Button> {
         let offset = current_page * self.rows * self.cols;
