@@ -4,6 +4,7 @@ use nanoserde::{DeJson, SerJson};
 #[derive(Clone, Debug, DeJson, SerJson, PartialEq)]
 pub struct Button {
     pub label: String,
+    pub parent: Option<String>,
     pub pronunciation: Option<String>,
     pub image: Option<String>,
     pub folder: Option<String>,
@@ -16,7 +17,8 @@ impl Button {
         let related = None;
         let variant = None;
         let folder = None;
-        Self { label, pronunciation, image, folder, related, variant }
+        let parent = None;
+        Self { label, parent, pronunciation, image, folder, related, variant }
     }
 
     pub fn get_related_word_label(&self, system: &System) -> String {

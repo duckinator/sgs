@@ -195,6 +195,12 @@ folders['Nouns/Remaining'] = cats(
 
 from pprint import pprint
 
+def set_button_parent(parent, btn):
+    if btn is None:
+        return btn
+
+    btn['parent'] = parent
+    return btn
 
 def folder(name, buttons, toplevel=False, immediate=False, rows=6, cols=9):
     return {
@@ -204,7 +210,7 @@ def folder(name, buttons, toplevel=False, immediate=False, rows=6, cols=9):
         "immediate": immediate,
         "rows": rows,
         "cols": cols,
-        "buttons": buttons,
+        "buttons": [set_button_parent(name, btn) for btn in buttons],
     }
 
 def button(word, **options):
