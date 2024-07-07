@@ -147,6 +147,7 @@ fn test_system() {
             },
             {
                 "name": "Hidden Folder",
+                "id": "Hidden Folder",
                 "toplevel": false,
                 "immediate": false,
                 "rows": 1,
