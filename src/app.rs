@@ -168,7 +168,17 @@ impl eframe::App for App {
                     for row in 0..folder.rows {
                         for col in 0..folder.cols {
                             if col == (folder.cols - 1) && row == (folder.rows - 1) && folder.needs_pagination() {
-                                let pages = folder.buttons.len() / (folder.rows * folder.cols);
+                                let num_buttons = folder.buttons.len();
+                                let pages = num_buttons / (folder.rows * folder.cols);
+
+                                // Account for the last page being only partially filled.
+                                let pages =
+                                    if (pages * ((folder.rows * folder.cols) - 1)) < num_buttons {
+                                        pages + 1
+                                    } else {
+                                        pages
+                                    };
+
                                 let label = format!("{}/{}\n->", self.current_page + 1, pages);
                                 let egui_button = egui::Button::new(label);
                                 if ui.add_sized(dimensions.button_size, egui_button).clicked() {
