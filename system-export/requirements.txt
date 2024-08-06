@@ -1,0 +1,2 @@
+pyexcel-odsr
+dataclasses-json
