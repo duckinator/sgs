@@ -110,7 +110,7 @@ impl System {
         let folder_id = &self.folders[folder].id;
         // Split at ::, store the first item (if it exists) or the entire string (if it doesn't).
         let toplevel_name = folder_id.split("::").next().unwrap_or(&folder_id);
-        self.toplevel_folders().iter().position(|f| f.id == toplevel_name).expect("somehow got invalid folder")
+        self.toplevel_folders().iter().position(|f| f.id == toplevel_name).expect("got invalid toplevel folder")
     }
 }
 
