@@ -50,12 +50,13 @@ def mkbutton(label, parent=None):
     if label == '':
         return None
 
-    if label.startswith("$"):
-        ...
-
     pronunciation = None
     image = None
     folder = None
+
+    if label.startswith("$"):
+        folder = label[1:]
+        label = folder.split("$")[-1]
 
     # Button(label, parent, pronunciation, image, folder)
     return Button(label, parent, pronunciation, image, folder)
