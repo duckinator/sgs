@@ -55,8 +55,8 @@ def mkbutton(label, parent=None):
     folder = None
 
     if label.startswith("$"):
-        folder = label[1:]
-        label = folder.split("$")[-1]
+        folder = label[1:].replace("$", "::")
+        label = folder.split("::")[-1]
 
     # Button(label, parent, pronunciation, image, folder)
     return Button(label, parent, pronunciation, image, folder)
@@ -75,6 +75,7 @@ def mkfolder(name, data):
         folder_id = name[1:]
     else:
         folder_id = name
+    folder_id = folder_id.replace("$", "::")
     name = folder_id.split("::")[-1]
     rows = 6
     cols = 9
