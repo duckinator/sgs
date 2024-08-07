@@ -1223,63 +1223,35 @@
         "cols": 9,
         "buttons": [
             {
-                "label": "t",
+                "label": "the",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "h",
+                "label": "be",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "e",
+                "label": "to",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "b",
+                "label": "of",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "e",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "t",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "o",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "o",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "f",
+                "label": "and",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
@@ -1293,287 +1265,98 @@
                 "folder": null
             },
             {
-                "label": "n",
+                "label": "in",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "d",
+                "label": "have",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "a",
+                "label": "for",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "i",
+                "label": "not",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "n",
+                "label": "on",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "h",
+                "label": "with",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "a",
+                "label": "as",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "v",
+                "label": "at",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "e",
+                "label": "but",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "f",
+                "label": "by",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "o",
+                "label": "from",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "r",
+                "label": "or",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "n",
+                "label": "out",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,
                 "folder": null
             },
             {
-                "label": "o",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "t",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "o",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "n",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "w",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "i",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "t",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "h",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "a",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "s",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "a",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "t",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "b",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "u",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "t",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "b",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "y",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "f",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "r",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "o",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "m",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "o",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "r",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "o",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "u",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "t",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "i",
-                "parent": null,
-                "pronunciation": null,
-                "image": null,
-                "folder": null
-            },
-            {
-                "label": "f",
+                "label": "if",
                 "parent": null,
                 "pronunciation": null,
                 "image": null,

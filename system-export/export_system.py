@@ -105,9 +105,9 @@ def mkhotbar():
     or
     out
     if
-    """.splitlines()
-    words = [word.strip() for word in words]
-    return Hotbar(1, 9, mkbuttons(words))
+    """.strip().splitlines()
+    words = [mkbutton(word.strip()) for word in words]
+    return Hotbar(1, 9, words)
 
 
 def main():
