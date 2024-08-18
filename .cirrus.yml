@@ -1,15 +1,8 @@
-Lint_task:
-  persistent_worker: &linux
+task:
+  persistent_worker:
     isolation:
       container: {image: "rust:1.76-bookworm"}
-  install_script:
-    - apt-get update
-    - apt-get install -y libclang-dev libspeechd-dev
-  script:
-    - cargo clippy
-
-Linux_task:
-  alias: Linux tests
+  # Cache config.
   registry_cache:
     folder: $CARGO_HOME/registry
     fingerprint_script: cat Cargo.lock
@@ -18,45 +11,36 @@ Linux_task:
     fingerprint_script:
       - rustc --version
       - cat Cargo.lock
-  persistent_worker: *linux
+  before_cache_script: rm -rf $CARGO_HOME/registry/index
+  # Common install script.
   install_script:
     - apt-get update
     - apt-get install -y libclang-dev libspeechd-dev
-  cargo_build_script:
-    - cargo test --no-run
-  script:
-    - cargo test
-  before_cache_script: rm -rf $CARGO_HOME/registry/index
-
-success_task:
-  name: CI success
-  persistent_worker:
-    isolation:
-      container: {image: "busybox"}
-  depends_on:
-    - Lint
-    - Linux tests
-
-
-site_gen_task:
-  depends_on:
-    - CI success
-  persistent_worker: *linux
-  rustup_target_script:
-    - rustup target add wasm32-unknown-unknown
-  cargo_install_script:
-    - cargo install wasm-bindgen-cli@0.2.90
-  cargo_build_script:
-    - cargo build --target wasm32-unknown-unknown
-  wasm_bindgen_script:
-    - cp -r ./web ./_site
-    - wasm-bindgen --target web --out-dir _site/ target/wasm32-unknown-unknown/debug/sgs.wasm
-  site_artifacts:
-    path: "_site/*"
+  # Individual tasks using the same config.
+  matrix:
+    # Linut task.
+    - name: Lint
+      script: cargo clippy
+    # Linux tests.
+    - name: Linux tests
+      script:
+        - cargo test --no-run
+        - cargo test
+    # Site generation task.
+    - name: site_gen
+      depends_on: ["Linux tests"]
+      rustup_target_script: rustup target add wasm32-unknown-unknown
+      cargo_install_script: cargo install wasm-bindgen-cli@0.2.90
+      cargo_build_script:   cargo build --target wasm32-unknown-unknown
+      copy_script:          cp -r ./web ./_site
+      wasm_bindgen_script:  wasm-bindgen --target web --out-dir _site/ target/wasm32-unknown-unknown/debug/sgs.wasm
+      site_artifacts:
+        path: "_site/"
 
 publish_task:
   only_if: $BRANCH == 'main'
   depends_on:
+    - Lint
     - site_gen
   persistent_worker:
     isolation:
