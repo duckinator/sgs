@@ -1,6 +1,7 @@
 Lint_task:
-  container:
-    image: rust:1.73
+  persistent_worker: &linux
+    isolation:
+      container: {image: "rust:1.76-bookworm"}
   install_script:
     - apt-get update
     - apt-get install -y libclang-dev libspeechd-dev
@@ -17,8 +18,7 @@ Linux_task:
     fingerprint_script:
       - rustc --version
       - cat Cargo.lock
-  container:
-    image: rust:1.73
+  persistent_worker: *linux
   install_script:
     - apt-get update
     - apt-get install -y libclang-dev libspeechd-dev
@@ -30,7 +30,9 @@ Linux_task:
 
 success_task:
   name: CI success
-  container: {image: "busybox"}
+  persistent_worker:
+    isolation:
+      container: {image: "busybox"}
   depends_on:
     - Lint
     - Linux tests
@@ -39,8 +41,7 @@ success_task:
 site_gen_task:
   depends_on:
     - CI success
-  container:
-    image: rust:1.76-bookworm
+  persistent_worker: *linux
   rustup_target_script:
     - rustup target add wasm32-unknown-unknown
   cargo_install_script:
@@ -57,8 +58,9 @@ publish_task:
   only_if: $BRANCH == 'main'
   depends_on:
     - site_gen
-  container:
-    image: node:20-bookworm
+  persistent_worker:
+    isolation:
+      container: {image: "node:20-bookworm"}
   env:
     NETLIFY_AUTH_TOKEN: ENCRYPTED[022956827617e8b2cf518ed37953f6028a49c0928ff43ccfe6edbcffe907c707b5c8209a2a25030854b324c27c99199d]
     NETLIFY_SITE_ID: ENCRYPTED[1b67d4169a6bb34256b7409a0843b04d847d6397f45127da970bd7afc077f83a1e7765e1251a316cc9c9bc9d2cff78a0]
