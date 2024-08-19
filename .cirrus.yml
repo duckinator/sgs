@@ -1,64 +1,50 @@
-Lint_task:
-  container:
-    image: rust:1.73
-  install_script:
-    - apt-get update
-    - apt-get install -y libclang-dev libspeechd-dev
-  script:
-    - cargo clippy
-
-Linux_task:
-  alias: Linux tests
+task:
+  persistent_worker:
+    isolation:
+      container: {image: "rust:1.76-bookworm"}
+  # Cache config.
   registry_cache:
     folder: $CARGO_HOME/registry
     fingerprint_script: cat Cargo.lock
-  target_cache:
-    folder: target
-    fingerprint_script:
-      - rustc --version
-      - cat Cargo.lock
-  container:
-    image: rust:1.73
+  #target_cache:
+  #  folder: target
+  #  fingerprint_script:
+  #    - rustc --version
+  #    - cat Cargo.lock
+  before_cache_script: rm -rf $CARGO_HOME/registry/index
+  # Common install script.
   install_script:
     - apt-get update
     - apt-get install -y libclang-dev libspeechd-dev
-  cargo_build_script:
-    - cargo test --no-run
-  script:
-    - cargo test
-  before_cache_script: rm -rf $CARGO_HOME/registry/index
-
-success_task:
-  name: CI success
-  container: {image: "busybox"}
-  depends_on:
-    - Lint
-    - Linux tests
-
-
-site_gen_task:
-  depends_on:
-    - CI success
-  container:
-    image: rust:1.76-bookworm
-  rustup_target_script:
-    - rustup target add wasm32-unknown-unknown
-  cargo_install_script:
-    - cargo install wasm-bindgen-cli@0.2.90
-  cargo_build_script:
-    - cargo build --target wasm32-unknown-unknown
-  wasm_bindgen_script:
-    - cp -r ./web ./_site
-    - wasm-bindgen --target web --out-dir _site/ target/wasm32-unknown-unknown/debug/sgs.wasm
-  site_artifacts:
-    path: "_site/*"
+  # Individual tasks using the same config.
+  matrix:
+    # Linut task.
+    - name: Lint
+      script: cargo clippy
+    # Linux tests.
+    - name: Linux tests
+      script:
+        - cargo test --no-run
+        - cargo test
+    # Site generation task.
+    - name: site_gen
+      depends_on: ["Linux tests"]
+      rustup_target_script: rustup target add wasm32-unknown-unknown
+      cargo_install_script: cargo install wasm-bindgen-cli@0.2.90
+      cargo_build_script:   cargo build --target wasm32-unknown-unknown
+      copy_script:          cp -r ./web ./_site
+      wasm_bindgen_script:  wasm-bindgen --target web --out-dir _site/ target/wasm32-unknown-unknown/debug/sgs.wasm
+      site_artifacts:
+        path: "_site/"
 
 publish_task:
   only_if: $BRANCH == 'main'
   depends_on:
+    - Lint
     - site_gen
-  container:
-    image: node:20-bookworm
+  persistent_worker:
+    isolation:
+      container: {image: "node:20-bookworm"}
   env:
     NETLIFY_AUTH_TOKEN: ENCRYPTED[022956827617e8b2cf518ed37953f6028a49c0928ff43ccfe6edbcffe907c707b5c8209a2a25030854b324c27c99199d]
     NETLIFY_SITE_ID: ENCRYPTED[1b67d4169a6bb34256b7409a0843b04d847d6397f45127da970bd7afc077f83a1e7765e1251a316cc9c9bc9d2cff78a0]
