@@ -60,7 +60,7 @@ impl App {
             if let Some(system_file) = args.system {
                 System::load_file(&system_file).expect("Failed to load System from specified file")
             } else {
-                System::load_str(include_str!("../system-wiki2016.json")).expect("Failed to load bundled System. (This should never happen.)")
+                System::load_str(include_str!("../system.json")).expect("Failed to load bundled System. (This should never happen.)")
             };
         info!("Loaded System configuration.");
 
