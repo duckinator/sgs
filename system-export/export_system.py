@@ -50,6 +50,8 @@ def mkbutton(label, parent=None):
     if label == '':
         return None
 
+    label = label.replace("&amp;", "&")
+
     pronunciation = None
     image = None
     folder = None
@@ -69,6 +71,8 @@ def mkbuttons(buttons, parent=None):
 
 
 def mkfolder(name, data):
+    name = name.replace("&amp;", "&")
+
     toplevel = name.startswith("^")
     immediate = name.startswith("!")
     if toplevel or immediate:
@@ -111,6 +115,17 @@ def mkhotbar():
     return Hotbar(1, 9, words)
 
 
+def mkrelated(mapping):
+    result = {}
+    for (k, v) in filter(bool, mapping):
+        if k not in result:
+            result[k] = []
+        result[k].append(mkbutton(v))
+    return result
+
+def mkvariants(mapping):
+    return mkrelated(mapping)
+
 def main():
     file_dir = Path(__file__).parent
     system_ods = (file_dir / '..' / 'system.ods').resolve()
@@ -120,8 +135,8 @@ def main():
     # This is purely used for documenting the file itself.
     data.pop('HELP')
 
-    related = data.pop('RELATED')
-    variants = data.pop('VARIANTS')
+    related = mkrelated(data.pop('RELATED'))
+    variants = mkvariants(data.pop('VARIANTS'))
     #print(related)
     #print(variants)
 
